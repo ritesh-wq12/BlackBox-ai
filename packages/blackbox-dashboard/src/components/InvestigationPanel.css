@@ -1,0 +1,121 @@
+.investigation {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--amber);
+  border-radius: 2px;
+  background: var(--panel);
+}
+
+.investigation h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+.chain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.chain-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.chain-arrow {
+  color: var(--muted);
+  font-weight: 700;
+  font-family: var(--mono);
+}
+
+.outcome {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.outcome.likely { color: var(--green); }
+.outcome.ambiguous { color: var(--amber); }
+.outcome.none { color: var(--red); }
+
+.score {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--green);
+}
+
+.score.amber { color: var(--amber); }
+.score.red { color: var(--red); }
+
+.why {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.why-row {
+  display: flex;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.why-row:last-child { border-bottom: none; }
+
+.why-point { color: var(--muted); }
+
+.why-score {
+  font-weight: 700;
+  font-family: var(--mono);
+}
+
+.callout {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 2px;
+  background: #1a1d24;
+  font-size: 13px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.details {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--text);
+  border-radius: 2px;
+}
+
+.diff {
+  margin-top: 16px;
+  padding: 12px;
+  background: #0a120e;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--text);
+  border-radius: 2px;
+}
+
+.error-box {
+  margin-top: 16px;
+  padding: 12px;
+  background: #120a0a;
+  border: 1px solid var(--red);
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: var(--red);
+  border-radius: 2px;
+}

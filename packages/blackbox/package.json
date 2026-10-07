@@ -1,0 +1,28 @@
+{
+  "name": "blackbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Digital Black Box CLI agent",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "blackbox": "dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "node --watch-path=. --inspect=9229 dist/cli.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test dist/**/*.test.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.6.3"
+  }
+}

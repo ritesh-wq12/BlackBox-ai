@@ -1,0 +1,39 @@
+.header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.header .brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.header .status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.header .status.recording { color: var(--green); }
+
+.header .meta {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.header .controls {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}

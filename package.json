@@ -1,0 +1,25 @@
+{
+  "name": "digital-blackbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A flight recorder for software projects: records development events, reconstructs the timeline after a failure, and shows the evidence behind the most likely root cause.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/blackbox",
+    "packages/blackbox-dashboard"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "blackbox": "node packages/blackbox/dist/cli.js",
+    "dashboard:dev": "npm --workspace packages/blackbox-dashboard run dev",
+    "dashboard:build": "npm --workspace packages/blackbox-dashboard run build",
+    "dashboard:preview": "npm --workspace packages/blackbox-dashboard run preview",
+    "typecheck": "tsc --noEmit -p packages/blackbox && npm --workspace packages/blackbox-dashboard run typecheck",
+    "test": "npm --workspace packages/blackbox run test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}

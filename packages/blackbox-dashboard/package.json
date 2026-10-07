@@ -1,0 +1,25 @@
+{
+  "name": "blackbox-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Digital Black Box local dashboard",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.6.3",
+    "vite": "^6.3.5"
+  }
+}

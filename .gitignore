@@ -1,0 +1,17 @@
+node_modules/
+.pnp
+.pnp.js
+*.log
+*.pid
+*.ddp
+.idea/
+.vscode/
+.DS_Store
+
+packages/blackbox/dist/
+packages/blackbox-dashboard/dist/
+packages/blackbox-dashboard/node_modules/
+
+# blackbox project-local data
+**/.blackbox/
+**/.blackbox.sqlite
