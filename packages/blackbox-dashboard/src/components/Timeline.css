@@ -1,12 +1,12 @@
 .timeline {
   position: relative;
-  padding-left: 20px;
+  padding-left: 24px;
 }
 
 .timeline::before {
   content: "";
   position: absolute;
-  left: 6px;
+  left: 8px;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -14,35 +14,99 @@
 }
 
 .row {
+  position: relative;
   display: flex;
-  gap: 12px;
-  padding: 10px 0;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0 10px 16px;
   border-bottom: 1px solid var(--border);
-  align-items: flex-start;
 }
 
 .row:last-child { border-bottom: none; }
 
-.row .dot {
-  flex-shrink: 0;
+.row::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 14px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-top: 6px;
+  background: var(--border);
+  border: 2px solid var(--bg);
+}
+
+.row .dot {
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  flex-shrink: 0;
 }
 
 .row .dot.green { background: var(--green); }
 .row .dot.red { background: var(--red); }
+.row .dot.amber { background: var(--amber); }
 .row .dot.blue { background: #60a5fa; }
 
-.row .mono {
+.row-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.row-meta .time {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.row-meta .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--panel);
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row-body .desc {
+  font-size: 13px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.row-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.row-sub::before {
+  content: "/";
+  margin-right: 4px;
   color: var(--muted);
 }
 
-.row .desc { flex: 1; }
+.failure-row {
+  background: #1a0a0a;
+  border-left: 3px solid var(--red);
+  padding-left: 13px;
+}
 
-.failure-row { background: #1a0a0a; }
-
-.row .icon { flex-shrink: 0; font-size: 16px; }
+.failure-row .dot { background: var(--red); }

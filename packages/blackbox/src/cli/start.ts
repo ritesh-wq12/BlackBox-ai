@@ -74,6 +74,12 @@ export class StartCommand {
     this.printBanner(project);
     this.openBrowser(dashboardUrl);
 
+    // Persist the port so `blackbox run` can discover the server.
+    try {
+      const { writeFileSync } = require("node:fs");
+      writeFileSync(join(project, ".blackbox", "port.txt"), String(this.options.port), "utf-8");
+    } catch { /* best effort */ }
+
     this.keepAlive();
   }
 

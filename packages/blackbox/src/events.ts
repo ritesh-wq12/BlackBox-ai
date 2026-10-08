@@ -77,7 +77,9 @@ export type BlackBoxEvent =
   | ErrorEvent;
 
 export function isBuildPassed(event: BlackBoxEvent): boolean {
-  return event.type === "BUILD_TEST" && (event as BuildTestEvent).details.exitCode === 0;
+  if (event.type === "BUILD_TEST") return (event as BuildTestEvent).details.exitCode === 0;
+  if (event.type === "COMMAND") return (event as CommandEvent).details.exitCode === 0;
+  return false;
 }
 
 export function isBuildFailed(event: BlackBoxEvent): boolean {
@@ -164,6 +166,7 @@ export function createBuildTestEvent(
   command: string,
   exitCode: number,
   timestamp: string = new Date().toISOString(),
+  errorMsg?: string,
 ): BuildTestEvent {
   return {
     id: randomUUID(),
@@ -173,7 +176,11 @@ export function createBuildTestEvent(
     path: command,
     project,
     sessionId,
-    details: { exitCode, command },
+    details: {
+      exitCode,
+      command,
+      ...(errorMsg !== undefined ? { error: errorMsg } : {}),
+    },
     order: 0,
   };
 }

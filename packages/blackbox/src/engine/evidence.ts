@@ -34,11 +34,14 @@ export function getBuildExitCode(event: BlackBoxEvent): number | null {
   return null;
 }
 
-/** Find the most recent BUILD_TEST with exit 0 — the last healthy state. */
+/** Find the most recent passing build (BUILD_TEST or COMMAND with exit 0) — the last healthy state. */
 export function findLastHealthyEvent(events: BlackBoxEvent[]): BlackBoxEvent | null {
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i]!;
-    if (e.type === "BUILD_TEST" && (e as any).details?.exitCode === 0) {
+    const code = e.type === "BUILD_TEST" || e.type === "COMMAND"
+      ? (e as any).details?.exitCode ?? null
+      : null;
+    if (code === 0) {
       return e;
     }
   }

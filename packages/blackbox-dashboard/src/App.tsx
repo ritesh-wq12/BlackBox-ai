@@ -64,7 +64,7 @@ export function App() {
 
   async function refresh() {
     try {
-      const res = await fetch("http://localhost:8888/api/state");
+      const res = await fetch("/api/state");
       const next = await res.json();
       setState(next);
     } catch {
@@ -81,7 +81,7 @@ export function App() {
   async function onInvestigate() {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8888/api/investigate", {
+      const res = await fetch("/api/investigate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ projectDir: state.project }),
@@ -110,8 +110,8 @@ export function App() {
         isFailure={state.health.status === "FAILURE DETECTED"}
       />
       {state.health.status === "FAILURE DETECTED" && (
-        <div className="controls">
-          <button onClick={onInvestigate} disabled={loading}>
+        <div className="investigate-controls">
+          <button className="investigate-btn" onClick={onInvestigate} disabled={loading}>
             {loading ? "Investigating…" : "INVESTIGATE FAILURE"}
           </button>
         </div>

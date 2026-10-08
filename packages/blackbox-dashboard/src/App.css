@@ -153,6 +153,39 @@ body {
   margin-top: 16px;
 }
 
+.investigate-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 16px;
+  background: #1a0a0a;
+  border: 1px solid var(--red);
+  border-radius: 2px;
+}
+
+.investigate-btn {
+  padding: 12px 24px;
+  border-radius: 2px;
+  border: 1px solid var(--red);
+  background: var(--red);
+  color: #0b0d10;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  font-family: var(--mono);
+}
+
+.investigate-btn:hover:not(:disabled) {
+  background: #fca5a5;
+}
+
+.investigate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 button {
   padding: 10px 16px;
   border-radius: 2px;

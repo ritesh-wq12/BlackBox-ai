@@ -1,18 +1,46 @@
 import http from "node:http";
 import { readFileSync, existsSync } from "node:fs";
-import { join, extname, resolve } from "node:path";
+import { join, extname, resolve, dirname as pathDirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getStorage } from "../storage/index.js";
 import { isBuildPassed, isBuildFailed } from "../events.js";
 import { evidenceEngine, type EvidenceSet } from "../engine/index.js";
+import { createAdapter, type AiProviderConfig, type ExplainableAdapter } from "../ai/index.js";
 import type { BlackBoxEvent } from "../events.js";
 
+/**
+ * AI explanation adapter — created from configuration.
+ * - No provider configured → FallbackAdapter (deterministic, offline)
+ * - Provider configured → ProviderAdapter (fetches from provider, falls back on failure)
+ *
+ * The EvidenceSet (score, outcome, evidence, root-cause candidate) is ALWAYS
+ * produced by the deterministic evidence engine. The AI adapter NEVER modifies
+ * these values — it only narrates the recorded evidence.
+ */
+let aiAdapter: ExplainableAdapter | null = null;
+
+function getAiAdapter(): ExplainableAdapter {
+  if (!aiAdapter) {
+    const config: AiProviderConfig = {};
+    // Provider configuration would be loaded from environment or config file.
+    // For now, no provider is configured — use deterministic fallback.
+    aiAdapter = createAdapter(config);
+  }
+  return aiAdapter;
+}
+
 const __filename = fileURLToPath(import.meta.url);
-const _here = dirname(__filename);
+const _here = pathDirname(__filename);
 const __dirname = resolve(_here, "..", "..");
 
-function dirname(fileURL: string): string {
-  return fileURL.split(/[/\\]/).slice(0, -1).join("/");
+/**
+ * Path to the built dashboard (React + Vite production build).
+ * Resolved relative to the CLI package so the server can always find it,
+ * regardless of the project directory being recorded.
+ */
+function dashboardDistDir(): string {
+  const dist = resolve(__dirname, "..", "..", "..", "packages", "blackbox-dashboard", "dist");
+  return existsSync(dist) ? dist : "";
 }
 
 interface ServerOptions {
@@ -52,8 +80,37 @@ export class Server {
       return;
     }
 
-    if (pathname === "/api/state" || pathname === "/api/events") {
+    if (pathname === "/api/state") {
       this.json(res, 200, this.buildState());
+      return;
+    }
+    if (pathname === "/api/events") {
+      if (req.method === "POST") {
+        const chunks: Buffer[] = [];
+        req.on("data", (chunk) => {
+          chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+          if (Buffer.concat(chunks).length > 1024 * 1024) req.destroy();
+        });
+        req.on("end", () => {
+          let body: unknown = null;
+          if (chunks.length > 0) {
+            try { body = JSON.parse(chunks.join("")); } catch { /* ignore */ }
+          }
+          if (!this.options.storage) {
+            this.json(res, 200, { ok: false, error: "storage unavailable" });
+            return;
+          }
+          const storage = this.options.storage;
+          if (Array.isArray(body)) {
+            for (const ev of body) {
+              storage.insertEvent(ev as Parameters<typeof storage.insertEvent>[0]);
+            }
+          }
+          this.json(res, 200, { ok: true, count: Array.isArray(body) ? body.length : 0 });
+        });
+        return;
+      }
+      this.json(res, 200, this.options.storage.listEvents(this.options.projectDir));
       return;
     }
 
@@ -77,14 +134,22 @@ export class Server {
         ? (body as { events: BlackBoxEvent[] }).events
         : this.options.storage.listEvents(this.options.projectDir) as BlackBoxEvent[];
       const result = evidenceEngine.analyze(events) as EvidenceSet;
-      this.json(res, 200, { ok: true, ...result });
+      // The AI explanation is optional and does not modify the deterministic result.
+      // Without a configured provider key, the fallback adapter provides a local
+      // explanation that narrates the evidence set as-is.
+      const aiExplanation = getAiAdapter().explain(result);
+      this.json(res, 200, { ok: true, ...result, aiExplanation });
       return;
     }
 
-    const assetPath = resolve(this.options.projectDir, "dashboard", "dist", pathname);
-    if (pathname.startsWith("/assets/") && existsSync(assetPath)) {
-      this.sendFile(res, assetPath);
-      return;
+    // Serve the React dashboard's built assets.
+    const dashDist = dashboardDistDir();
+    if (dashDist && pathname.startsWith("/assets/")) {
+      const assetPath = join(dashDist, pathname);
+      if (existsSync(assetPath)) {
+        this.sendFile(res, assetPath);
+        return;
+      }
     }
 
     res.writeHead(404).end("Not found");
@@ -105,21 +170,21 @@ export class Server {
     let lastHealthyBuild: string | null = null;
     let latestFailure: string | null = null;
 
+    // Single backward scan: find the most recent build outcome.
+    // The first build event (pass or fail) we encounter scanning backwards
+    // is the most recent one and determines health.
     for (let i = events.length - 1; i >= 0; i--) {
       const e = events[i]!;
       if (isBuildPassed(e)) {
         lastHealthyBuild = e.timestamp;
         break;
       }
-    }
-    for (let i = events.length - 1; i >= 0; i--) {
-      const e = events[i]!;
       if (isBuildFailed(e)) {
         latestFailure = e.timestamp;
+        healthStatus = "FAILURE DETECTED";
         break;
       }
     }
-    if (latestFailure) healthStatus = "FAILURE DETECTED";
 
     return {
       project: this.options.projectDir,
@@ -132,229 +197,23 @@ export class Server {
     };
   }
 
-  private buildDashboardHtml(): string {
-    const projectName = this.options.projectDir.split(/[\\/]/).pop() ?? "project";
-    return `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${projectName} — Digital Black Box</title>
-  <style>
-    :root {
-      --bg: #0b0d10;
-      --panel: #121418;
-      --border: #232730;
-      --text: #e6e8eb;
-      --muted: #8a9099;
-      --green: #34d399;
-      --red: #f87171;
-      --amber: #fbbf24;
-      --mono: "Courier New", monospace;
-      --sans: system-ui, -apple-system, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 14px;
-      min-height: 100vh;
-    }
-    header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-    }
-    header .brand { font-weight: 700; letter-spacing: 0.02em; }
-    header .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
-      border-radius: 2px;
-      font-family: var(--mono);
-      font-size: 12px;
-    }
-    header .status.recording { color: var(--green); }
-    .meta { margin-left: auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-    main { padding: 20px; max-width: 1000px; }
-    .health {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 2px;
-      border: 1px solid var(--border);
-      margin-bottom: 16px;
-    }
-    .health.healthy { border-color: var(--green); background: #0a120e; }
-    .health.failure { border-color: var(--red); background: #120a0a; }
-    .health .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-    .health .value { font-size: 22px; font-weight: 700; }
-    .health.healthy .value { color: var(--green); }
-    .health.failure .value { color: var(--red); }
-    .timeline { position: relative; padding-left: 20px; }
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 6px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: var(--border);
-    }
-    .row {
-      display: flex;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: flex-start;
-    }
-    .row:last-child { border-bottom: none; }
-    .row .dot {
-      flex-shrink: 0;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-top: 6px;
-    }
-    .row .dot.green { background: var(--green); }
-    .row .dot.red { background: var(--red); }
-    .row .dot.blue { background: #60a5fa; }
-    .row .mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-    .row .desc { flex: 1; }
-    .failure-row { background: #1a0a0a; }
-    .row .icon { flex-shrink: 0; font-size: 16px; }
-    .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-    button {
-      padding: 10px 16px;
-      border-radius: 2px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    button:hover { background: #1a1d24; }
-    .empty { color: var(--muted); font-style: italic; padding: 24px 0; }
-    .spinner { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 640px) {
-      .meta { width: 100%; margin-left: 0; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">◉ Digital Black Box</div>
-    <div class="status recording">● RECORDING</div>
-    <div class="meta">
-      <span>Project: <span class="mono" id="project-name"></span></span>
-      <span>Events: <span class="mono" id="event-count">0</span></span>
-      <span>Status: <span class="mono" id="health-status">HEALTHY</span></span>
-    </div>
-  </header>
-  <main>
-    <div class="health healthy">
-      <span class="label">Health</span>
-      <span class="value">HEALTHY</span>
-      <span style="margin-left:auto;font-size:12px;color:var(--muted)" id="health-detail"></span>
-    </div>
-    <div class="timeline" id="timeline">
-      <div class="empty">Event count 0 — events will appear as they happen.</div>
-    </div>
-    <div class="controls">
-      <button id="pause-btn">Pause</button>
-      <button id="stop-btn">Stop</button>
-      <button id="investigate-btn" hidden>INVESTIGATE FAILURE</button>
-    </div>
-  </main>
-  <script>
-    const root = document.querySelector("main");
-    const projectName = document.getElementById("project-name");
-    const eventCount = document.getElementById("event-count");
-    const healthStatus = document.getElementById("health-status");
-    const healthDetail = document.getElementById("health-detail");
-    const timeline = document.getElementById("timeline");
-    const investigateBtn = document.getElementById("investigate-btn");
-    const pauseBtn = document.getElementById("pause-btn");
-    const stopBtn = document.getElementById("stop-btn");
-
-    projectName.textContent = "PROJECT";
-    let state = { events: [], eventCount: 0, health: { status: "HEALTHY" } };
-
-    async function refresh() {
-      try {
-        const res = await fetch("/api/state");
-        state = await res.json();
-        render();
-      } catch (_) { /* polling failure: keep RECORDING visible */ }
-    }
-
-    function render() {
-      eventCount.textContent = String(state.eventCount ?? 0);
-      healthStatus.textContent = state.health?.status ?? "HEALTHY";
-      const detail = state.health?.lastHealthyBuild
-        ? "Last success: " + new Date(state.health.lastHealthyBuild).toLocaleTimeString()
-        : "";
-      healthDetail.textContent = detail;
-
-      if (!state.events.length) {
-        timeline.innerHTML = '<div class="empty">Event count 0 — events will appear as they happen.</div>';
-        investigateBtn.hidden = true;
-        return;
-      }
-
-      investigateBtn.hidden = state.health?.status !== "FAILURE DETECTED";
-      let html = "";
-      state.events.forEach((e, i) => {
-        const isFailure = state.health?.status === "FAILURE DETECTED" && i === state.events.length - 1;
-        html += "<div class=\"row \">" +
-          "<div class=\"dot \"></div>" +
-          "<div class=\"mono\">" + new Date(e.timestamp).toLocaleTimeString() + "</div>" +
-          "<div class=\"icon\">" + iconFor(e) + "</div>" +
-          "<div class=\"desc\">" + escapeHtml(e.summary) + "</div>" +
-          "<div class=\"mono\">" + (e.path || "") + "</div>" +
-          "</div>";
-      });
-      timeline.innerHTML = html;
-    }
-
-    function iconFor(e) {
-      switch (e.type) {
-        case "BUILD_TEST": return e.details?.exitCode === 0 ? "✓" : "✕";
-        case "COMMAND": return "$";
-        case "FILE": return "◆";
-        case "GIT": return "⬡";
-        case "ERROR": return "⚠";
-        default: return "•";
-      }
-    }
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    }
-
-    pauseBtn.addEventListener("click", () => {});
-    stopBtn.addEventListener("click", () => {});
-    investigateBtn.addEventListener("click", () => {});
-
-    refresh();
-    setInterval(refresh, 1000);
-  </script>
-</body>
-</html>`;
-  }
-
   private serveDashboard(res: http.ServerResponse): void {
+    const dashDist = dashboardDistDir();
+    if (dashDist && existsSync(join(dashDist, "index.html"))) {
+      // Serve the built React dashboard.
+      const html = readFileSync(join(dashDist, "index.html"), "utf-8");
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      res.end(html);
+      return;
+    }
+    // Fallback: minimal inline page if the dashboard build is unavailable.
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.end(this.buildDashboardHtml());
+    res.end(
+      "<!doctype html><html><head><meta charset=\"utf-8\">" +
+      "<title>Digital Black Box</title></head><body>" +
+      "<p>Digital Black Box is recording. Open the dashboard in a browser.</p>" +
+      "</body></html>"
+    );
   }
 
   private sendFile(res: http.ServerResponse, filePath: string): void {

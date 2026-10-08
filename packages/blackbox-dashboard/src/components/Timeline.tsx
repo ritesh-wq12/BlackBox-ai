@@ -23,25 +23,33 @@ interface BlackBoxEvent {
   };
 }
 
-export function Timeline({ events, isFailure  }: { events: BlackBoxEvent[]; isFailure: boolean }) {
+export function Timeline({ events, isFailure }: { events: BlackBoxEvent[]; isFailure: boolean }) {
   if (!events.length) {
     return <div className="empty">Event count 0 — events will appear as they happen.</div>;
   }
 
   return (
     <div className="timeline">
-      {events.map((e, i) => {
-        const isFailureRow = isFailure && i === events.length - 1;
+      {events.map((e) => {
+        const isFailureRow = isFailure && e.type === "BUILD_TEST" && (e.details as any)?.exitCode !== 0;
         return (
           <div
             key={e.id}
             className={`row ${isFailureRow ? "failure-row" : ""}`}
           >
-            <div className={`dot ${dotClass(e)}`} />
-            <div className="mono">{new Date(e.timestamp).toLocaleTimeString()}</div>
-            <div className="icon">{iconFor(e, e.details)}</div>
-            <div className="desc">{escapeHtml(e.summary)}</div>
-            <div className="mono">{e.path || ""}</div>
+            <div className={`dot ${dotClass(e)}`} title={eventLabel(e)} />
+            <div className="row-meta">
+              <div className="mono time">{new Date(e.timestamp).toLocaleTimeString()}</div>
+              <div className="label">{eventLabel(e)}</div>
+            </div>
+            <div className="row-body">
+              <div className="desc">{escapeHtml(e.summary)}</div>
+              {eventSub(e) && (
+                <div className="row-sub mono" title={eventSub(e)}>
+                  {escapeHtml(eventSub(e))}
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
@@ -51,24 +59,46 @@ export function Timeline({ events, isFailure  }: { events: BlackBoxEvent[]; isFa
 
 function dotClass(e: BlackBoxEvent): string {
   if (e.type === "BUILD_TEST" && (e.details as any)?.exitCode === 0) return "green";
-  if (e.type === "BUILD_TEST") return "red";
+  if (e.type === "BUILD_TEST" && (e.details as any)?.exitCode !== 0) return "red";
+  if (e.type === "ERROR") return "red";
+  if (e.type === "FILE") return "amber";
+  if (e.type === "COMMAND") return (e.details as any)?.exitCode === 0 ? "green" : "red";
   return "blue";
 }
 
-function iconFor(e: BlackBoxEvent, details?: BlackBoxEvent["details"]): string {
+function eventLabel(e: BlackBoxEvent): string {
   switch (e.type) {
     case "BUILD_TEST":
-      return details?.exitCode === 0 ? "✓" : "✕";
+      return (e.details as any)?.exitCode === 0 ? "BUILD PASSED" : "BUILD FAILED";
     case "COMMAND":
-      return "$";
+      return `COMMAND (exit ${(e.details as any)?.exitCode ?? "?"})`;
     case "FILE":
-      return "◆";
-    case "GIT":
-      return "⬡";
+      return `FILE ${e.details.changeType ?? "modified"}`;
     case "ERROR":
-      return "⚠";
+      return "ERROR";
+    case "GIT":
+      return "GIT";
     default:
-      return "•";
+      return e.type;
+  }
+}
+
+function eventSub(e: BlackBoxEvent): string {
+  switch (e.type) {
+    case "BUILD_TEST": {
+      const cmd = (e.details as any)?.command;
+      return cmd ? String(cmd).slice(0, 60) : "";
+    }
+    case "COMMAND":
+      return (e.details as any)?.command ? String((e.details as any).command).slice(0, 60) : "";
+    case "FILE":
+      return e.path || "";
+    case "ERROR":
+      return (e.details as any)?.message ? String((e.details as any).message).slice(0, 80) : "";
+    case "GIT":
+      return (e.details as any)?.branch ? `branch: ${e.details.branch}` : "";
+    default:
+      return e.path || "";
   }
 }
 

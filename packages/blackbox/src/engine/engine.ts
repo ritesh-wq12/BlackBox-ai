@@ -1,8 +1,8 @@
+import { execSync } from "node:child_process";
 import {
   findLastHealthyEvent,
   findFirstFailureEvent,
-  // filesInWindow is not used directly in engine.ts; it lives in evidence.ts.
-  // kept for completeness.
+  filesInWindow,
   findErrorEvent,
   buildChain,
   BlackBoxEvent,
@@ -47,27 +47,44 @@ export class EvidenceEngine {
     const top = scored[0]!;
     const status = outcomeFor(top.score);
 
+    // Build the breakdown by re-checking each signal for the top candidate.
+    // This mirrors scoreCandidates() so the breakdown always matches the score.
     const breakdown: { point: string; eventId: string }[] = [];
-    // Each point is justified by an actual recorded event ID.
-    let points = 0;
-    const fileEvent = chain.events.find((e) => e.type === "FILE" && e.path === top.path)!;
-    if (fileEvent) {
-      breakdown.push({ point: `File changed in window: ${top.path}`, eventId: fileEvent.id });
-      points += POINTS_PER_SIGNAL;
+    const fileEvent = chain.events.find((e) => e.type === "FILE" && e.path === top.path);
+    const fileEventIndex = fileEvent ? chain.events.indexOf(fileEvent) : -1;
+    const failureIndex = chain.failureEvent ? chain.events.indexOf(chain.failureEvent) : (chain.events.length - 1);
+    const errorEvent = chain.errorEvent;
+
+    // Signal 1: file changed in window.
+    if (fileEventIndex >= 0) {
+      breakdown.push({ point: `File changed in window: ${top.path}`, eventId: fileEvent!.id });
     }
-    if (chain.errorEvent && ((chain.errorEvent.details as any)?.message ?? "").includes(top.path)) {
-      breakdown.push({ point: `Error references ${top.path}`, eventId: chain.errorEvent.id });
-      points += POINTS_PER_SIGNAL;
-    }
-    // Add the build-reference signal if present.
+
+    // Signal 2: build/test error output references the candidate path.
     const builds = chain.events.filter(
       (e) => (e.type === "BUILD_TEST" || e.type === "COMMAND") && (e.details as any)?.error?.includes(top.path)
     );
     if (builds.length > 0) {
-      breakdown.push({ point: `Build/test referenced ${top.path}`, eventId: builds[0]!.id });
-      points += POINTS_PER_SIGNAL;
+      breakdown.push({ point: `Build/test output references ${top.path}`, eventId: builds[0]!.id });
     }
 
+    // Signal 3: error event message references the candidate path.
+    if (errorEvent && ((errorEvent.details as any)?.message ?? "").includes(top.path)) {
+      breakdown.push({ point: `Error references ${top.path}`, eventId: errorEvent.id });
+    }
+
+    // Signal 4: file change within 30s of the failure.
+    if (fileEventIndex >= 0 && failureIndex >= 0) {
+      const delta = Math.abs(
+        new Date((chain.events[failureIndex] as any).timestamp).getTime() -
+        new Date((chain.events[fileEventIndex] as any).timestamp).getTime()
+      );
+      if (delta <= 30_000) {
+        breakdown.push({ point: `File changed within 30s of failure`, eventId: fileEvent!.id });
+      }
+    }
+
+    // Build the evidence chain.
     const chainLines: string[] = [];
     if (lastHealthy) {
       chainLines.push(`BUILD PASSED ${lastHealthy.timestamp}`);
@@ -84,13 +101,23 @@ export class EvidenceEngine {
     }
     chainLines.push(`${status} ${top.score}/100`);
 
+    // Try to capture a git diff for the candidate file if available.
+    let diff: string | undefined;
+    if (top.path) {
+      try {
+        diff = this.captureGitDiff(chain.events, top.path);
+      } catch {
+        // git not available; leave diff undefined.
+      }
+    }
+
     return {
       score: top.score,
       status,
       breakdown,
       topCandidates: scored.slice(0, 3).map((c) => ({ candidate: c.path, score: c.score })),
       chain: chainLines,
-      diff: undefined,
+      diff,
       error: (chain.errorEvent?.details as any)?.message,
     };
   }
@@ -127,6 +154,28 @@ export class EvidenceEngine {
       error: undefined,
       message: "No causal change detected.",
     };
+  }
+
+  /**
+   * Attempt to capture a git diff for a specific file.
+   * Returns undefined if git is unavailable or the file has no diff.
+   */
+  private captureGitDiff(events: BlackBoxEvent[], filePath: string): string | undefined {
+    try {
+      const projectDir = events[0]?.project;
+      if (!projectDir) return undefined;
+      const quotedPath = JSON.stringify(filePath);
+      const diff = execSync(`git diff -- ${quotedPath}`, {
+        cwd: projectDir,
+        encoding: "utf-8",
+        stdio: ["ignore", "pipe", "pipe"],
+        timeout: 5000,
+      });
+      const trimmed = diff.trim();
+      return trimmed.length > 0 ? trimmed : undefined;
+    } catch {
+      return undefined;
+    }
   }
 }
 

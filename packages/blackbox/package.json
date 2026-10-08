@@ -15,7 +15,7 @@
     "dev": "node --watch-path=. --inspect=9229 dist/cli.js",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "node --test dist/**/*.test.js"
+    "test": "node --test dist/cli/*.test.js dist/engine/*.test.js dist/events.test.js dist/ai/*.test.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.3.0"
