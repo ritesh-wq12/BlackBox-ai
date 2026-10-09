@@ -45,6 +45,31 @@ function postToServer(port: number, events: Record<string, unknown>[]): boolean 
   }
 }
 
+type ServerRecordingStatus = "recording" | "paused" | "stopped" | null;
+
+/**
+ * Ask the running server whether it is currently recording, before appending
+ * an event. Returns null when the server is unreachable or does not report a
+ * status — callers fail open and record as usual (unchanged legacy behavior).
+ */
+async function fetchRecordingStatus(port: number | undefined): Promise<ServerRecordingStatus> {
+  if (!port) return null;
+  try {
+    const res = await fetch(`http://localhost:${port}/api/state`, {
+      signal: AbortSignal.timeout(1500),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { recordingStatus?: unknown };
+    return data.recordingStatus === "recording" ||
+      data.recordingStatus === "paused" ||
+      data.recordingStatus === "stopped"
+      ? data.recordingStatus
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 export class RunCommand {
   private storage: ReturnType<typeof getStorage> | null = null;
   private readonly port: number | undefined;
@@ -99,7 +124,7 @@ export class RunCommand {
       process.stderr.write(chunk);
     });
 
-    child.on("error", (error) => {
+    child.on("error", async (error) => {
       const end = Date.now();
       const commandEvent = createCommandEvent(
         this.projectDir,
@@ -120,14 +145,21 @@ export class RunCommand {
         new Date().toISOString()
       );
       const events = [commandEvent, errorEvent];
-      if (this.port && !postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])) {
-        this.recordEvents(events);
+      const recordingStatus = await fetchRecordingStatus(this.port);
+      if (recordingStatus === "paused" || recordingStatus === "stopped") {
+        // Session is paused/stopped: intentionally record nothing, and do not
+        // print the "recorded" verdict for an event we did not save.
+        console.log(`\n⏸ Black Box recording ${recordingStatus}: event not recorded`);
+      } else {
+        if (this.port && !postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])) {
+          this.recordEvents(events);
+        }
+        console.log(`\n✕ Black Box recorded: BUILD FAILED`);
       }
-      console.log(`\n✕ Black Box recorded: BUILD FAILED`);
       process.exitCode = 1;
     });
 
-    child.on("close", (code) => {
+    child.on("close", async (code) => {
       const end = Date.now();
       const exitCode = code !== undefined && code !== null ? code : 1;
 
@@ -162,6 +194,16 @@ export class RunCommand {
       // Try to post events to the running server via HTTP first.
       // This avoids concurrent SQLite writes on Windows when `start` and `run`
       // are separate processes sharing the same database file.
+      // Before appending anything, ask the server if it is still recording:
+      // while paused/stopped the event is intentionally not recorded.
+      const recordingStatus = await fetchRecordingStatus(this.port);
+      if (recordingStatus === "paused" || recordingStatus === "stopped") {
+        // Session is paused/stopped: intentionally record nothing, and do not
+        // print the "recorded" verdict for an event we did not save.
+        console.log(`\n⏸ Black Box recording ${recordingStatus}: event not recorded`);
+        if (isBuildFailed(commandEvent)) process.exitCode = 1;
+        return;
+      }
       if (this.port && !postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])) {
         this.recordEvents(events);
       }

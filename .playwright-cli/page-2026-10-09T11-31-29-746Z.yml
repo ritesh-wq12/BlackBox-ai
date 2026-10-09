@@ -1,0 +1,59 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Digital Black Box
+      - generic [ref=f1e12]: forensic build console
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Project
+        - generic [ref=f1e60]: devpost-ai-project
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Events
+        - generic [ref=f1e18]: "849"
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Health
+        - generic [ref=f1e21]: Healthy
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: Recording
+      - button "Pause recording" [ref=f1e28] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f1e33] [cursor=pointer]: Stop
+  - generic [ref=f1e37]:
+    - generic [ref=f1e38]:
+      - heading "Event trace" [level=2] [ref=f1e39]
+      - generic [ref=f1e40]: 2 of 849 events
+      - generic [ref=f1e41]:
+        - tab "All" [ref=f1e42] [cursor=pointer]
+        - tab "Build" [ref=f1e43] [cursor=pointer]
+        - tab "Files" [ref=f1e44] [cursor=pointer]
+        - tab "Commands" [ref=f1e45] [cursor=pointer]
+        - tab "Errors" [active] [selected] [ref=f1e46] [cursor=pointer]
+        - tab "Git" [ref=f1e47] [cursor=pointer]
+    - list [ref=f1e63]:
+      - listitem [ref=f1e1679]:
+        - 'link "Error Failed 07:07:04 [eval]:1 console.error(''BLACKBOX_TEST_ERROR: ^^^^^^^^^^^^^^^^^^^" [ref=f1e1681] [cursor=pointer]':
+          - /url: "#event-75309cc8-bc92-4060-b0c0-98948512c9d0"
+          - generic [ref=f1e1686]:
+            - generic [ref=f1e1687]:
+              - generic [ref=f1e1688]: Error
+              - generic [ref=f1e1689]: Failed
+              - generic [ref=f1e1690]: 07:07:04
+            - paragraph [ref=f1e1691]: "[eval]:1 console.error('BLACKBOX_TEST_ERROR: ^^^^^^^^^^^^^^^^^^^"
+      - listitem [ref=f1e1693]:
+        - link "Error Failed 16:09:04 '--help' is not recognized as an internal or external command, operable program Evidence trail" [ref=f1e1695] [cursor=pointer]:
+          - /url: "#event-447e6c78-9cc7-4e7c-ae63-59f69667971d"
+          - generic [ref=f1e1700]:
+            - generic [ref=f1e1701]:
+              - generic [ref=f1e1702]: Error
+              - generic [ref=f1e1703]: Failed
+              - generic [ref=f1e1704]: 16:09:04
+            - paragraph [ref=f1e1705]: "'--help' is not recognized as an internal or external command, operable program"
+            - generic "Evidence trail" [ref=f1e1706]:
+              - generic [ref=f1e1707]: Error captured
+              - generic [ref=f1e1709]:
+                - generic [aria-hidden] [ref=f1e1710]: →
+                - generic [ref=f1e1711]:
+                  - text: File changed
+                  - generic [ref=f1e1712]: styles
+              - generic [ref=f1e1713]:
+                - generic [aria-hidden] [ref=f1e1714]: →
+                - generic [ref=f1e1715]: Error match

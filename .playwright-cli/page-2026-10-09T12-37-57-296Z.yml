@@ -1,0 +1,44 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Digital Black Box
+      - generic [ref=f1e12]: forensic build console
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]: Project
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Events
+        - generic [ref=f1e18]: "0"
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Health
+        - generic [ref=f1e21]: Healthy
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: Recording
+      - button "Pause recording" [ref=f1e28] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f1e33] [cursor=pointer]: Stop
+  - generic "Session summary" [ref=f1e37]:
+    - generic [ref=f1e38]:
+      - generic [ref=f1e39]: Passed
+      - generic [ref=f1e40]: "0"
+    - generic [ref=f1e41]:
+      - generic [ref=f1e42]: Failed
+      - generic [ref=f1e43]: "0"
+    - generic [ref=f1e44]:
+      - generic [ref=f1e45]: Files changed
+      - generic [ref=f1e46]: "0"
+    - generic [ref=f1e47]:
+      - generic [ref=f1e48]: Last failure
+      - generic [ref=f1e49]: —
+  - generic [ref=f1e50]:
+    - generic [ref=f1e51]:
+      - heading "Event trace" [level=2] [ref=f1e52]
+      - generic [ref=f1e53]: 0 events
+      - generic [ref=f1e54]:
+        - tab "All" [selected] [ref=f1e55] [cursor=pointer]
+        - tab "Build" [ref=f1e56] [cursor=pointer]
+        - tab "Files" [ref=f1e57] [cursor=pointer]
+        - tab "Commands" [ref=f1e58] [cursor=pointer]
+        - tab "Errors" [ref=f1e59] [cursor=pointer]
+        - tab "Git" [ref=f1e60] [cursor=pointer]
+    - generic [ref=f1e64]:
+      - paragraph [ref=f1e71]: BlackBox is recording.
+      - paragraph [ref=f1e72]: Run a build, test, or command to begin the evidence trail.

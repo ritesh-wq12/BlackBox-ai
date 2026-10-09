@@ -1,0 +1,103 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Digital Black Box
+      - generic [ref=f1e12]: forensic build console
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Project
+        - generic [ref=f1e60]: devpost-ai-project
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Events
+        - generic [ref=f1e18]: "850"
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Health
+        - generic [ref=f1e21]: Healthy
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: Recording
+      - button "Pause recording" [ref=f1e28] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f1e33] [cursor=pointer]: Stop
+  - generic [ref=f1e37]:
+    - generic [ref=f1e38]:
+      - heading "Event trace" [level=2] [ref=f1e39]
+      - generic [ref=f1e40]: 8 of 850 events
+      - generic [ref=f1e41]:
+        - tab "All" [ref=f1e42] [cursor=pointer]
+        - tab "Build" [ref=f1e43] [cursor=pointer]
+        - tab "Files" [ref=f1e44] [cursor=pointer]
+        - tab "Commands" [ref=f1e45] [cursor=pointer]
+        - tab "Errors" [ref=f1e46] [cursor=pointer]
+        - tab "Git" [active] [selected] [ref=f1e47] [cursor=pointer]
+    - list [ref=f1e63]:
+      - listitem [ref=f1e1716]:
+        - 'link "Git 07:05:46 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1718] [cursor=pointer]':
+          - /url: "#event-e19f1bf1-a876-469f-af66-faffc235ea2b"
+          - generic [ref=f1e1725]:
+            - generic [ref=f1e1726]:
+              - generic [ref=f1e1727]: Git
+              - generic [ref=f1e1728]: 07:05:46
+            - paragraph [ref=f1e1729]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1730]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1732]:
+        - 'link "Git 07:40:12 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1734] [cursor=pointer]':
+          - /url: "#event-f0064c80-2235-4334-a675-b2b241d98743"
+          - generic [ref=f1e1741]:
+            - generic [ref=f1e1742]:
+              - generic [ref=f1e1743]: Git
+              - generic [ref=f1e1744]: 07:40:12
+            - paragraph [ref=f1e1745]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1746]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1748]:
+        - 'link "Git 07:46:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1750] [cursor=pointer]':
+          - /url: "#event-5a677eab-d262-45dc-9900-39ac1474ee65"
+          - generic [ref=f1e1757]:
+            - generic [ref=f1e1758]:
+              - generic [ref=f1e1759]: Git
+              - generic [ref=f1e1760]: 07:46:47
+            - paragraph [ref=f1e1761]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1762]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1764]:
+        - 'link "Git 16:00:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1766] [cursor=pointer]':
+          - /url: "#event-78ec36b5-3a5a-41aa-a0fc-70bda342a17f"
+          - generic [ref=f1e1773]:
+            - generic [ref=f1e1774]:
+              - generic [ref=f1e1775]: Git
+              - generic [ref=f1e1776]: 16:00:47
+            - paragraph [ref=f1e1777]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1778]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1780]:
+        - 'link "Git 16:00:52 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1782] [cursor=pointer]':
+          - /url: "#event-508876ae-eb9d-4f0b-a834-381502d6e879"
+          - generic [ref=f1e1789]:
+            - generic [ref=f1e1790]:
+              - generic [ref=f1e1791]: Git
+              - generic [ref=f1e1792]: 16:00:52
+            - paragraph [ref=f1e1793]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1794]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1796]:
+        - 'link "Git 16:01:22 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1798] [cursor=pointer]':
+          - /url: "#event-0a7a171e-ee4f-4b43-a41f-aa3389651bb4"
+          - generic [ref=f1e1805]:
+            - generic [ref=f1e1806]:
+              - generic [ref=f1e1807]: Git
+              - generic [ref=f1e1808]: 16:01:22
+            - paragraph [ref=f1e1809]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1810]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1812]:
+        - 'link "Git 16:08:39 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1814] [cursor=pointer]':
+          - /url: "#event-10ace227-8510-4a4d-962c-e64317a172a7"
+          - generic [ref=f1e1821]:
+            - generic [ref=f1e1822]:
+              - generic [ref=f1e1823]: Git
+              - generic [ref=f1e1824]: 16:08:39
+            - paragraph [ref=f1e1825]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1826]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e1828]:
+        - 'link "Git 16:10:14 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e1830] [cursor=pointer]':
+          - /url: "#event-eed983c7-84ab-4b83-ad45-e799f2cb5c55"
+          - generic [ref=f1e1837]:
+            - generic [ref=f1e1838]:
+              - generic [ref=f1e1839]: Git
+              - generic [ref=f1e1840]: 16:10:14
+            - paragraph [ref=f1e1841]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e1842]: "branch: ui-glass-redesign"

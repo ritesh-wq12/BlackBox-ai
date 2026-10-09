@@ -14,10 +14,19 @@
  *   - No causal change → explains that no supported causal change was found.
  */
 
-import { BaseAdapter, type AiProviderConfig } from "./base.js";
+import { BaseAdapter, type AiProviderConfig, type ExplanationResult } from "./base.js";
 import type { EvidenceSet } from "../engine/index.js";
 
 export class FallbackAdapter extends BaseAdapter {
+  /** Deterministic explanation with provenance metadata. */
+  async explainDetailed(evidenceSet: EvidenceSet): Promise<ExplanationResult> {
+    return {
+      text: this.explain(evidenceSet),
+      source: "deterministic",
+      fallbackReason: "no-provider",
+    };
+  }
+
   explain(evidenceSet: EvidenceSet): string {
     this.validateImmutability(evidenceSet);
 

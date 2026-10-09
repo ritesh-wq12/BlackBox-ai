@@ -5,13 +5,25 @@ import { fileURLToPath } from "node:url";
 import { getStorage } from "../storage/index.js";
 import { isBuildPassed, isBuildFailed } from "../events.js";
 import { evidenceEngine, type EvidenceSet } from "../engine/index.js";
-import { createAdapter, type AiProviderConfig, type ExplainableAdapter } from "../ai/index.js";
+import {
+  createAdapter,
+  buildProviderFetch,
+  type AiProviderConfig,
+  type ExplainableAdapter,
+  type ExplanationResult,
+} from "../ai/index.js";
 import type { BlackBoxEvent } from "../events.js";
 
 /**
  * AI explanation adapter — created from configuration.
  * - No provider configured → FallbackAdapter (deterministic, offline)
  * - Provider configured → ProviderAdapter (fetches from provider, falls back on failure)
+ *
+ * Configuration comes from the environment (never logged, never returned):
+ *   BLACKBOX_AI_PROVIDER    "anthropic" | "openai"
+ *   BLACKBOX_AI_API_KEY     provider API key
+ *   BLACKBOX_AI_MODEL       optional model override (small default per provider)
+ *   BLACKBOX_AI_TIMEOUT_MS  optional timeout, default 10000
  *
  * The EvidenceSet (score, outcome, evidence, root-cause candidate) is ALWAYS
  * produced by the deterministic evidence engine. The AI adapter NEVER modifies
@@ -21,9 +33,27 @@ let aiAdapter: ExplainableAdapter | null = null;
 
 function getAiAdapter(): ExplainableAdapter {
   if (!aiAdapter) {
-    const config: AiProviderConfig = {};
-    // Provider configuration would be loaded from environment or config file.
-    // For now, no provider is configured — use deterministic fallback.
+    const provider = (process.env.BLACKBOX_AI_PROVIDER ?? "").trim().toLowerCase();
+    const apiKey = (process.env.BLACKBOX_AI_API_KEY ?? "").trim();
+    const model = (process.env.BLACKBOX_AI_MODEL ?? "").trim();
+    const timeoutRaw = Number((process.env.BLACKBOX_AI_TIMEOUT_MS ?? "").trim());
+    const timeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : 10_000;
+
+    let config: AiProviderConfig = {};
+    if ((provider === "anthropic" || provider === "openai") && apiKey) {
+      config = {
+        provider,
+        apiKey,
+        timeoutMs,
+        providerFetch: buildProviderFetch({
+          provider,
+          apiKey,
+          model: model || undefined,
+          timeoutMs,
+        }),
+      };
+    }
+    // Deliberately no logging here — the API key must never be printed.
     aiAdapter = createAdapter(config);
   }
   return aiAdapter;
@@ -50,16 +80,33 @@ interface ServerOptions {
   storage: ReturnType<typeof getStorage>;
 }
 
+/** Recording session status, held in the server process. */
+export type RecordingStatus = "recording" | "paused" | "stopped";
+
 export class Server {
   private options: Required<ServerOptions>;
   private server: http.Server | null = null;
+  private recordingStatus: RecordingStatus = "recording";
 
   constructor(options: ServerOptions) {
     this.options = { ...options };
   }
 
+  getRecordingStatus(): RecordingStatus {
+    return this.recordingStatus;
+  }
+
   start(): void {
-    this.server = http.createServer((req, res) => this.handle(req, res));
+    this.server = http.createServer((req, res) => {
+      void this.handle(req, res).catch(() => {
+        // Never surface error details (they could contain sensitive config).
+        try {
+          this.json(res, 500, { ok: false, error: "internal error" });
+        } catch {
+          // headers already sent
+        }
+      });
+    });
     this.server.listen(this.options.port, () => {
       console.log(`\n✓ Black Box server listening on http://localhost:${this.options.port}`);
     });
@@ -71,7 +118,7 @@ export class Server {
     }
   }
 
-  private handle(req: http.IncomingMessage, res: http.ServerResponse): void {
+  private async handle(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
     const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
     const pathname = url.pathname;
 
@@ -82,6 +129,22 @@ export class Server {
 
     if (pathname === "/api/state") {
       this.json(res, 200, this.buildState());
+      return;
+    }
+
+    // Recording session control: pause / resume / stop (POST only).
+    if (
+      req.method === "POST" &&
+      (pathname === "/api/recording/pause" ||
+        pathname === "/api/recording/resume" ||
+        pathname === "/api/recording/stop")
+    ) {
+      this.recordingStatus = pathname.endsWith("/pause")
+        ? "paused"
+        : pathname.endsWith("/resume")
+          ? "recording"
+          : "stopped";
+      this.json(res, 200, { ok: true, recordingStatus: this.recordingStatus });
       return;
     }
     if (pathname === "/api/events") {
@@ -98,6 +161,12 @@ export class Server {
           }
           if (!this.options.storage) {
             this.json(res, 200, { ok: false, error: "storage unavailable" });
+            return;
+          }
+          // Drop incoming events while paused or stopped; already-recorded
+          // events are never touched.
+          if (this.recordingStatus !== "recording") {
+            this.json(res, 200, { ok: false, recordingStatus: this.recordingStatus, count: 0 });
             return;
           }
           const storage = this.options.storage;
@@ -135,10 +204,25 @@ export class Server {
         : this.options.storage.listEvents(this.options.projectDir) as BlackBoxEvent[];
       const result = evidenceEngine.analyze(events) as EvidenceSet;
       // The AI explanation is optional and does not modify the deterministic result.
-      // Without a configured provider key, the fallback adapter provides a local
-      // explanation that narrates the evidence set as-is.
-      const aiExplanation = getAiAdapter().explain(result);
-      this.json(res, 200, { ok: true, ...result, aiExplanation });
+      // Await the adapter so a Promise is never serialized into the response.
+      const adapter = getAiAdapter();
+      const explanation: ExplanationResult =
+        typeof adapter.explainDetailed === "function"
+          ? await adapter.explainDetailed(result)
+          : {
+              text: String(await adapter.explain(result)),
+              source: "deterministic",
+              fallbackReason: "no-provider",
+            };
+      this.json(res, 200, {
+        ok: true,
+        ...result,
+        aiExplanation: explanation.text,
+        explanationSource: explanation.source,
+        ...(explanation.fallbackReason
+          ? { explanationFallback: explanation.fallbackReason }
+          : {}),
+      });
       return;
     }
 
@@ -159,6 +243,7 @@ export class Server {
     project: string;
     sessionId: string;
     recording: boolean;
+    recordingStatus: RecordingStatus;
     eventCount: number;
     events: BlackBoxEvent[];
     health: { status: string; lastHealthyBuild: string | null; latestFailure: string | null };
@@ -189,7 +274,8 @@ export class Server {
     return {
       project: this.options.projectDir,
       sessionId: this.options.sessionId,
-      recording: true,
+      recording: this.recordingStatus === "recording",
+      recordingStatus: this.recordingStatus,
       eventCount: events.length,
       events,
       health: { status: healthStatus, lastHealthyBuild, latestFailure },

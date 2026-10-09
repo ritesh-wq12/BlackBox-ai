@@ -17,6 +17,25 @@
  * the recorded evidence.
  */
 
-export { BaseAdapter, ExplainableAdapter, type AiProviderConfig } from "./base.js";
+export {
+  BaseAdapter,
+  ExplainableAdapter,
+  type AiProviderConfig,
+  type ExplanationResult,
+  type ExplanationSource,
+  type ExplanationFallbackReason,
+} from "./base.js";
 export { FallbackAdapter } from "./fallback.js";
-export { ProviderAdapter, createAdapter } from "./adapter.js";
+export {
+  ProviderAdapter,
+  createAdapter,
+  validateProviderExplanation,
+  MAX_EXPLANATION_LENGTH,
+} from "./adapter.js";
+export {
+  buildProviderFetch,
+  AI_SYSTEM_PROMPT,
+  DEFAULT_ANTHROPIC_MODEL,
+  DEFAULT_OPENAI_MODEL,
+  type ProviderFetchOptions,
+} from "./providers.js";

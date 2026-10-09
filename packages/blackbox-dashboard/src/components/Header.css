@@ -1,39 +1,230 @@
-.header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
+.app-bar {
+  --panel-radius: var(--radius-panel);
+
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 22px;
+  background: var(--surface);
+  backdrop-filter: blur(var(--blur-panel));
+  -webkit-backdrop-filter: blur(var(--blur-panel));
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--panel-radius);
+  box-shadow: var(--shadow-panel);
+  transition: background var(--t-base), border-color var(--t-base), box-shadow var(--t-base);
+}
+
+.app-bar:hover {
+  border-color: var(--glass-edge-strong);
+}
+
+.app-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.028) 14%,
+      transparent 45%);
+  pointer-events: none;
+  opacity: 1;
+  mix-blend-mode: screen;
+  transition: opacity var(--t-fast);
+}
+
+/* Header content sits above the glow layers with a higher z-index. */
+.app-bar > .brand,
+.app-bar > .meta,
+.app-bar > .controls {
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
-.header .brand {
-  font-weight: 700;
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-edge);
+  color: var(--green);
+  transition: background var(--t-base), border-color var(--t-base);
+}
+
+.brand-mark:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--glass-edge-strong);
+}
+
+.mark-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.brand-name {
+  font-size: 16px;
+  font-weight: 550;
   letter-spacing: 0.02em;
+  color: var(--text);
 }
 
-.header .status {
-  display: inline-flex;
+.brand-sub {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--muted);
+  letter-spacing: 0.09em;
+  text-transform: lowercase;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.meta-cell {
+  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px;
-  border-radius: 2px;
-  font-family: var(--mono);
-  font-size: 12px;
 }
 
-.header .status.recording { color: var(--green); }
+.meta-cell .label {
+  margin-right: 4px;
+}
 
-.header .meta {
-  margin-left: auto;
+.meta-cell .value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 550;
+}
+
+.controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
+  gap: 9px;
 }
 
-.header .controls {
-  margin-left: auto;
-  display: flex;
-  gap: 12px;
+/* Compact Pause/Stop: 32px tall, icon and label side by side,
+   matching the 32px icon tiles. */
+.controls .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 11px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.btn-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.health {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-edge);
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--text-dim);
+  transition: background var(--t-base), border-color var(--t-base), color var(--t-base);
+}
+
+.health .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 var(--green-edge);
+  animation: pulse-status 2.1s ease-in-out infinite;
+}
+
+/* Status pill: stop the pulse once recording is paused/stopped. */
+.health[data-status="paused"] .dot,
+.health[data-status="stopped"] .dot {
+  animation: none;
+}
+
+.health[data-status="paused"] {
+  color: var(--text-dim);
+}
+
+.health[data-status="stopped"] {
+  color: var(--muted);
+}
+
+.health:hover {
+  border-color: var(--glass-edge-strong);
+}
+
+.health[data-health="FAILURE DETECTED"] .dot {
+  background: var(--red);
+  box-shadow: 0 0 0 0 var(--red-edge);
+  animation-name: pulse-status-red;
+}
+
+.health[data-health="FAILURE DETECTED"] {
+  color: var(--red);
+  border-color: var(--red-edge);
+}@keyframes pulse-status {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.78); }
+}
+
+@keyframes pulse-status-red {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.78); }
+}
+
+@media (max-width: 920px) {
+  .app-bar { padding: 11px 16px; }
+  .meta { gap: 12px; }
+}
+
+@media (max-width: 760px) {
+  .meta { display: none; }
 }

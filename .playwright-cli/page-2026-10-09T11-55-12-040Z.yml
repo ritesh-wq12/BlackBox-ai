@@ -1,0 +1,159 @@
+- generic [ref=f3e73]:
+  - banner [ref=f3e74]:
+    - generic [ref=f3e80]:
+      - generic [ref=f3e81]: Digital Black Box
+      - generic [ref=f3e82]: forensic build console
+    - generic [ref=f3e83]:
+      - generic [ref=f3e84]:
+        - generic [ref=f3e85]: Project
+        - generic [ref=f3e86]: devpost-ai-project
+      - generic [ref=f3e87]:
+        - generic [ref=f3e88]: Events
+        - generic [ref=f3e89]: "1463"
+      - generic [ref=f3e90]:
+        - generic [ref=f3e91]: Health
+        - generic [ref=f3e92]: Failure
+    - generic [ref=f3e95]:
+      - generic [ref=f3e96]: Recording
+      - button "Pause recording" [ref=f3e99] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f3e104] [cursor=pointer]: Stop
+  - generic "Session summary" [ref=f3e108]:
+    - generic [ref=f3e109]:
+      - generic [ref=f3e110]: Passed
+      - generic [ref=f3e111]: "7"
+    - generic [ref=f3e112]:
+      - generic [ref=f3e113]: Failed
+      - generic [ref=f3e114]: "4"
+    - generic [ref=f3e115]:
+      - generic [ref=f3e116]: Files changed
+      - generic [ref=f3e117]: "1438"
+    - generic [ref=f3e118]:
+      - generic [ref=f3e119]: Last failure
+      - generic [ref=f3e120]: 17m ago
+  - generic [ref=f3e121]:
+    - generic [ref=f3e122]:
+      - heading "Event trace" [level=2] [ref=f3e123]
+      - generic [ref=f3e124]: 10 of 1463 events
+      - generic [ref=f3e125]:
+        - tab "All" [ref=f3e126] [cursor=pointer]
+        - tab "Build" [ref=f3e127] [cursor=pointer]
+        - tab "Files" [ref=f3e128] [cursor=pointer]
+        - tab "Commands" [ref=f3e129] [cursor=pointer]
+        - tab "Errors" [ref=f3e130] [cursor=pointer]
+        - tab "Git" [selected] [ref=f3e131] [cursor=pointer]
+    - list [ref=f3e135]:
+      - listitem [ref=f3e136]:
+        - 'link "Git 07:05:46 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e138] [cursor=pointer]':
+          - /url: "#event-e19f1bf1-a876-469f-af66-faffc235ea2b"
+          - generic [ref=f3e145]:
+            - generic [ref=f3e146]:
+              - generic [ref=f3e147]: Git
+              - generic [ref=f3e148]: 07:05:46
+            - paragraph [ref=f3e149]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e150]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e336]:
+        - 'link "Git 07:40:12 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e338] [cursor=pointer]':
+          - /url: "#event-f0064c80-2235-4334-a675-b2b241d98743"
+          - generic [ref=f3e345]:
+            - generic [ref=f3e346]:
+              - generic [ref=f3e347]: Git
+              - generic [ref=f3e348]: 07:40:12
+            - paragraph [ref=f3e349]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e350]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e814]:
+        - 'link "Git 07:46:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e816] [cursor=pointer]':
+          - /url: "#event-5a677eab-d262-45dc-9900-39ac1474ee65"
+          - generic [ref=f3e823]:
+            - generic [ref=f3e824]:
+              - generic [ref=f3e825]: Git
+              - generic [ref=f3e826]: 07:46:47
+            - paragraph [ref=f3e827]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e828]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e1016]:
+        - 'link "Git 16:00:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e1018] [cursor=pointer]':
+          - /url: "#event-78ec36b5-3a5a-41aa-a0fc-70bda342a17f"
+          - generic [ref=f3e1025]:
+            - generic [ref=f3e1026]:
+              - generic [ref=f3e1027]: Git
+              - generic [ref=f3e1028]: 16:00:47
+            - paragraph [ref=f3e1029]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e1030]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e1045]:
+        - 'link "Git 16:00:52 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e1047] [cursor=pointer]':
+          - /url: "#event-508876ae-eb9d-4f0b-a834-381502d6e879"
+          - generic [ref=f3e1054]:
+            - generic [ref=f3e1055]:
+              - generic [ref=f3e1056]: Git
+              - generic [ref=f3e1057]: 16:00:52
+            - paragraph [ref=f3e1058]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e1059]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e1074]:
+        - 'link "Git 16:01:22 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e1076] [cursor=pointer]':
+          - /url: "#event-0a7a171e-ee4f-4b43-a41f-aa3389651bb4"
+          - generic [ref=f3e1083]:
+            - generic [ref=f3e1084]:
+              - generic [ref=f3e1085]: Git
+              - generic [ref=f3e1086]: 16:01:22
+            - paragraph [ref=f3e1087]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e1088]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e1323]:
+        - 'link "Git 16:08:39 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e1325] [cursor=pointer]':
+          - /url: "#event-10ace227-8510-4a4d-962c-e64317a172a7"
+          - generic [ref=f3e1332]:
+            - generic [ref=f3e1333]:
+              - generic [ref=f3e1334]: Git
+              - generic [ref=f3e1335]: 16:08:39
+            - paragraph [ref=f3e1336]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e1337]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e1442]:
+        - 'link "Git 16:10:14 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e1444] [cursor=pointer]':
+          - /url: "#event-eed983c7-84ab-4b83-ad45-e799f2cb5c55"
+          - generic [ref=f3e1451]:
+            - generic [ref=f3e1452]:
+              - generic [ref=f3e1453]: Git
+              - generic [ref=f3e1454]: 16:10:14
+            - paragraph [ref=f3e1455]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e1456]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e2773]:
+        - 'link "Git 17:12:49 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e2775] [cursor=pointer]':
+          - /url: "#event-b0420b19-327d-4290-aea8-400c00f26b3b"
+          - generic [ref=f3e2782]:
+            - generic [ref=f3e2783]:
+              - generic [ref=f3e2784]: Git
+              - generic [ref=f3e2785]: 17:12:49
+            - paragraph [ref=f3e2786]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e2787]: "branch: ui-glass-redesign"
+      - listitem [ref=f3e3069]:
+        - 'link "Git 17:19:55 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f3e3071] [cursor=pointer]':
+          - /url: "#event-88317bfc-a9ed-4d94-b7ce-c93cac457aca"
+          - generic [ref=f3e3078]:
+            - generic [ref=f3e3079]:
+              - generic [ref=f3e3080]: Git
+              - generic [ref=f3e3081]: 17:19:55
+            - paragraph [ref=f3e3082]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f3e3083]: "branch: ui-glass-redesign"
+  - button "Investigate failure" [ref=f3e3222] [cursor=pointer]
+  - dialog "Keyboard shortcuts" [ref=f3e3223]:
+    - generic [ref=f3e3225]:
+      - generic [ref=f3e3226]:
+        - generic [ref=f3e3227]: Keyboard shortcuts
+        - button "Close" [ref=f3e3228] [cursor=pointer]
+      - list [ref=f3e3229]:
+        - listitem [ref=f3e3230]:
+          - generic [ref=f3e3231]: ⌘K / Ctrl+K
+          - generic [ref=f3e3232]: Open the command palette
+        - listitem [ref=f3e3233]:
+          - generic [ref=f3e3234]: J / K
+          - generic [ref=f3e3235]: Move through events
+        - listitem [ref=f3e3236]:
+          - generic [ref=f3e3237]: Enter
+          - generic [ref=f3e3238]: Expand a group / jump to event
+        - listitem [ref=f3e3239]:
+          - generic [ref=f3e3240]: I
+          - generic [ref=f3e3241]: Investigate the focused failure
+        - listitem [ref=f3e3242]:
+          - generic [ref=f3e3243]: Esc
+          - generic [ref=f3e3244]: Close panel, palette or help
+        - listitem [ref=f3e3245]:
+          - generic [ref=f3e3246]: "?"
+          - generic [ref=f3e3247]: Show this help

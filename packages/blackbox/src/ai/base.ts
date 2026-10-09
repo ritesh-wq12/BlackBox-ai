@@ -28,6 +28,24 @@ export interface AiProviderConfig {
   timeoutMs?: number;
 }
 
+/** Whether an explanation came from a real AI provider or the local fallback. */
+export type ExplanationSource = "ai" | "deterministic";
+
+/** Why a deterministic fallback explanation was used instead of AI output. */
+export type ExplanationFallbackReason =
+  | "no-provider"
+  | "timeout"
+  | "http-error"
+  | "invalid-output"
+  | "provider-error";
+
+/** Result of producing an explanation, including its provenance. */
+export interface ExplanationResult {
+  text: string;
+  source: ExplanationSource;
+  fallbackReason?: ExplanationFallbackReason;
+}
+
 /**
  * Interface that any AI provider must implement.
  * The only method is explain(), which receives the full EvidenceSet and
@@ -40,6 +58,12 @@ export interface ExplainableAdapter {
    * score, status, breakdown, or candidates.
    */
   explain(evidenceSet: EvidenceSet): string | Promise<string>;
+  /**
+   * Like explain(), but also reports where the text came from ("ai" or
+   * "deterministic") and, when it fell back, why. Optional so external
+   * adapters implementing only explain() keep working.
+   */
+  explainDetailed?(evidenceSet: EvidenceSet): Promise<ExplanationResult>;
 }
 
 /**

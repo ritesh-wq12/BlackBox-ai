@@ -1,0 +1,1375 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Digital Black Box
+      - generic [ref=f1e12]: forensic build console
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Project
+        - generic [ref=f1e60]: devpost-ai-project
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Events
+        - generic [ref=f1e18]: "866"
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Health
+        - generic [ref=f1e21]: Failure
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: Recording
+      - button "Pause recording" [ref=f1e28] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f1e33] [cursor=pointer]: Stop
+  - generic [ref=f1e37]:
+    - generic [ref=f1e38]:
+      - heading "Event trace" [level=2] [ref=f1e39]
+      - generic [ref=f1e40]: 866 events
+      - generic [ref=f1e41]:
+        - tab "All" [selected] [ref=f1e42] [cursor=pointer]
+        - tab "Build" [ref=f1e43] [cursor=pointer]
+        - tab "Files" [ref=f1e44] [cursor=pointer]
+        - tab "Commands" [ref=f1e45] [cursor=pointer]
+        - tab "Errors" [ref=f1e46] [cursor=pointer]
+        - tab "Git" [ref=f1e47] [cursor=pointer]
+    - list [ref=f1e63]:
+      - listitem [ref=f1e3615]:
+        - 'link "Git 07:05:46 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3617] [cursor=pointer]':
+          - /url: "#event-e19f1bf1-a876-469f-af66-faffc235ea2b"
+          - generic [ref=f1e3624]:
+            - generic [ref=f1e3625]:
+              - generic [ref=f1e3626]: Git
+              - generic [ref=f1e3627]: 07:05:46
+            - paragraph [ref=f1e3628]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3629]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e3631]:
+        - 'link "Command exit 1 07:07:04 node -e console.error(''BLACKBOX_TEST_ERROR: intentional failure''); process.exit(1) Evidence trail" [ref=f1e4181] [cursor=pointer]':
+          - /url: "#event-f9ab44ce-6d70-4c50-8303-af8fa9a6d30f"
+          - generic [ref=f1e3638]:
+            - generic [ref=f1e3639]:
+              - generic [ref=f1e3640]: Command
+              - generic [ref=f1e3641]: exit 1
+              - generic [ref=f1e3642]: 07:07:04
+            - paragraph [ref=f1e3643]: "node -e console.error('BLACKBOX_TEST_ERROR: intentional failure'); process.exit(1)"
+            - generic "Evidence trail" [ref=f1e4182]:
+              - generic [ref=f1e4183]: Command failed
+              - generic [ref=f1e4185]:
+                - generic [aria-hidden] [ref=f1e4186]: →
+                - generic [ref=f1e4187]:
+                  - text: Evidence
+                  - generic [ref=f1e4188]: 1 signal
+      - listitem [ref=f1e3645]:
+        - 'link "Error Failed 07:07:04 [eval]:1 console.error(''BLACKBOX_TEST_ERROR: ^^^^^^^^^^^^^^^^^^^ Evidence trail" [ref=f1e4189] [cursor=pointer]':
+          - /url: "#event-75309cc8-bc92-4060-b0c0-98948512c9d0"
+          - generic [ref=f1e3652]:
+            - generic [ref=f1e3653]:
+              - generic [ref=f1e3654]: Error
+              - generic [ref=f1e3655]: Failed
+              - generic [ref=f1e3656]: 07:07:04
+            - paragraph [ref=f1e3657]: "[eval]:1 console.error('BLACKBOX_TEST_ERROR: ^^^^^^^^^^^^^^^^^^^"
+            - generic "Evidence trail" [ref=f1e4190]:
+              - generic [ref=f1e4191]: Error captured
+              - generic [ref=f1e4193]:
+                - generic [aria-hidden] [ref=f1e4194]: →
+                - generic [ref=f1e4195]:
+                  - text: Evidence
+                  - generic [ref=f1e4196]: 1 signal
+      - listitem [ref=f1e1871]:
+        - button "19 files modified · 07:36:06" [ref=f1e1873] [cursor=pointer]:
+          - paragraph [ref=f1e1878]:
+            - text: ▸ 19 files modified
+            - generic [ref=f1e1879]: · 07:36:06
+      - listitem [ref=f1e1881]:
+        - button "42 files modified · 07:36:07" [ref=f1e1883] [cursor=pointer]:
+          - paragraph [ref=f1e1888]:
+            - text: ▸ 42 files modified
+            - generic [ref=f1e1889]: · 07:36:07
+      - listitem [ref=f1e1891]:
+        - button "3 files modified · 07:37:01" [ref=f1e1893] [cursor=pointer]:
+          - paragraph [ref=f1e1898]:
+            - text: ▸ 3 files modified
+            - generic [ref=f1e1899]: · 07:37:01
+      - listitem [ref=f1e1901]:
+        - link "File · modified 07:39:07 App.css" [ref=f1e1903] [cursor=pointer]:
+          - /url: "#event-f68c5542-e403-4ea4-8f6e-686e7bee7deb"
+          - generic [ref=f1e1908]:
+            - generic [ref=f1e1909]:
+              - generic [ref=f1e1910]: File · modified
+              - generic [ref=f1e1911]: 07:39:07
+            - paragraph [ref=f1e1912]: App.css
+      - listitem [ref=f1e1914]:
+        - link "File · modified 07:39:07 Header.css" [ref=f1e1916] [cursor=pointer]:
+          - /url: "#event-2820d060-4823-4749-9a72-04447a329ce9"
+          - generic [ref=f1e1921]:
+            - generic [ref=f1e1922]:
+              - generic [ref=f1e1923]: File · modified
+              - generic [ref=f1e1924]: 07:39:07
+            - paragraph [ref=f1e1925]: Header.css
+      - listitem [ref=f1e1927]:
+        - link "File · modified 07:39:24 Header.css" [ref=f1e1929] [cursor=pointer]:
+          - /url: "#event-8b9fb55a-7c85-413a-9042-cb735d1c53f4"
+          - generic [ref=f1e1934]:
+            - generic [ref=f1e1935]:
+              - generic [ref=f1e1936]: File · modified
+              - generic [ref=f1e1937]: 07:39:24
+            - paragraph [ref=f1e1938]: Header.css
+      - listitem [ref=f1e1940]:
+        - link "File · modified 07:39:24 Timeline.tsx" [ref=f1e1942] [cursor=pointer]:
+          - /url: "#event-3a646570-8905-4a8d-8924-8b08e5a36cea"
+          - generic [ref=f1e1947]:
+            - generic [ref=f1e1948]:
+              - generic [ref=f1e1949]: File · modified
+              - generic [ref=f1e1950]: 07:39:24
+            - paragraph [ref=f1e1951]: Timeline.tsx
+      - listitem [ref=f1e1953]:
+        - button "3 files changed · 07:39:55" [ref=f1e1955] [cursor=pointer]:
+          - paragraph [ref=f1e1960]:
+            - text: ▸ 3 files changed
+            - generic [ref=f1e1961]: · 07:39:55
+      - listitem [ref=f1e1963]:
+        - button "6 files changed · 07:39:56" [ref=f1e1965] [cursor=pointer]:
+          - paragraph [ref=f1e1970]:
+            - text: ▸ 6 files changed
+            - generic [ref=f1e1971]: · 07:39:56
+      - listitem [ref=f1e1973]:
+        - link "File · modified 07:40:04 .vite-temp" [ref=f1e1975] [cursor=pointer]:
+          - /url: "#event-fd0b5044-6bbc-4041-b67c-4ab4f1c68c3e"
+          - generic [ref=f1e1980]:
+            - generic [ref=f1e1981]:
+              - generic [ref=f1e1982]: File · modified
+              - generic [ref=f1e1983]: 07:40:04
+            - paragraph [ref=f1e1984]: .vite-temp
+      - listitem [ref=f1e1986]:
+        - link "File · deleted 07:40:04 vite.config.ts.timestamp-1791511804389-b3374a0834ab.mjs" [ref=f1e1988] [cursor=pointer]:
+          - /url: "#event-b6c268d8-0d82-4e3b-a52f-f253d55af917"
+          - generic [ref=f1e1993]:
+            - generic [ref=f1e1994]:
+              - generic [ref=f1e1995]: File · deleted
+              - generic [ref=f1e1996]: 07:40:04
+            - paragraph [ref=f1e1997]: vite.config.ts.timestamp-1791511804389-b3374a0834ab.mjs
+      - listitem [ref=f1e1999]:
+        - link "File · modified 07:40:11 .playwright-cli" [ref=f1e2001] [cursor=pointer]:
+          - /url: "#event-0adc1cf7-ffd5-4d3d-878f-083e7f14426a"
+          - generic [ref=f1e2006]:
+            - generic [ref=f1e2007]:
+              - generic [ref=f1e2008]: File · modified
+              - generic [ref=f1e2009]: 07:40:11
+            - paragraph [ref=f1e2010]: .playwright-cli
+      - listitem [ref=f1e2012]:
+        - link "File · modified 07:40:11 page-2026-10-09T02-10-11-398Z.yml" [ref=f1e2014] [cursor=pointer]:
+          - /url: "#event-4e059e3d-3334-433c-909a-a9e985586e54"
+          - generic [ref=f1e2019]:
+            - generic [ref=f1e2020]:
+              - generic [ref=f1e2021]: File · modified
+              - generic [ref=f1e2022]: 07:40:11
+            - paragraph [ref=f1e2023]: page-2026-10-09T02-10-11-398Z.yml
+      - listitem [ref=f1e3659]:
+        - 'link "Git 07:40:12 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3661] [cursor=pointer]':
+          - /url: "#event-f0064c80-2235-4334-a675-b2b241d98743"
+          - generic [ref=f1e3668]:
+            - generic [ref=f1e3669]:
+              - generic [ref=f1e3670]: Git
+              - generic [ref=f1e3671]: 07:40:12
+            - paragraph [ref=f1e3672]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3673]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e2025]:
+        - link "File · modified 07:40:12 .playwright-cli" [ref=f1e2027] [cursor=pointer]:
+          - /url: "#event-071f1541-fb03-4ee4-a9fd-3a8ef0fbe340"
+          - generic [ref=f1e2032]:
+            - generic [ref=f1e2033]:
+              - generic [ref=f1e2034]: File · modified
+              - generic [ref=f1e2035]: 07:40:12
+            - paragraph [ref=f1e2036]: .playwright-cli
+      - listitem [ref=f1e2038]:
+        - link "File · modified 07:40:46 page-2026-10-09T02-10-45-981Z.yml" [ref=f1e2040] [cursor=pointer]:
+          - /url: "#event-1364ff4e-c463-407d-8732-c67141b376b4"
+          - generic [ref=f1e2045]:
+            - generic [ref=f1e2046]:
+              - generic [ref=f1e2047]: File · modified
+              - generic [ref=f1e2048]: 07:40:46
+            - paragraph [ref=f1e2049]: page-2026-10-09T02-10-45-981Z.yml
+      - listitem [ref=f1e2051]:
+        - link "File · modified 07:40:47 .playwright-cli" [ref=f1e2053] [cursor=pointer]:
+          - /url: "#event-2bb84193-cf57-4c1f-8a69-695302a6197b"
+          - generic [ref=f1e2058]:
+            - generic [ref=f1e2059]:
+              - generic [ref=f1e2060]: File · modified
+              - generic [ref=f1e2061]: 07:40:47
+            - paragraph [ref=f1e2062]: .playwright-cli
+      - listitem [ref=f1e2064]:
+        - link "File · modified 07:41:14 page-2026-10-09T02-11-14-355Z.yml" [ref=f1e2066] [cursor=pointer]:
+          - /url: "#event-cf3850e7-f40c-4a12-b674-756218dbfb80"
+          - generic [ref=f1e2071]:
+            - generic [ref=f1e2072]:
+              - generic [ref=f1e2073]: File · modified
+              - generic [ref=f1e2074]: 07:41:14
+            - paragraph [ref=f1e2075]: page-2026-10-09T02-11-14-355Z.yml
+      - listitem [ref=f1e2077]:
+        - link "File · modified 07:41:17 .playwright-cli" [ref=f1e2079] [cursor=pointer]:
+          - /url: "#event-0f77fe0d-4f65-4fe1-a8c6-d30d4d49a641"
+          - generic [ref=f1e2084]:
+            - generic [ref=f1e2085]:
+              - generic [ref=f1e2086]: File · modified
+              - generic [ref=f1e2087]: 07:41:17
+            - paragraph [ref=f1e2088]: .playwright-cli
+      - listitem [ref=f1e2090]:
+        - link "File · modified 07:41:19 page-2026-10-09T02-11-18-922Z.yml" [ref=f1e2092] [cursor=pointer]:
+          - /url: "#event-ccbacfd6-78e3-4695-9317-21d6a71a18f0"
+          - generic [ref=f1e2097]:
+            - generic [ref=f1e2098]:
+              - generic [ref=f1e2099]: File · modified
+              - generic [ref=f1e2100]: 07:41:19
+            - paragraph [ref=f1e2101]: page-2026-10-09T02-11-18-922Z.yml
+      - listitem [ref=f1e2103]:
+        - link "File · modified 07:41:22 .playwright-cli" [ref=f1e2105] [cursor=pointer]:
+          - /url: "#event-4bfc2fc6-7bbc-4e1e-a318-812b7cdbaa7b"
+          - generic [ref=f1e2110]:
+            - generic [ref=f1e2111]:
+              - generic [ref=f1e2112]: File · modified
+              - generic [ref=f1e2113]: 07:41:22
+            - paragraph [ref=f1e2114]: .playwright-cli
+      - listitem [ref=f1e2116]:
+        - link "File · modified 07:41:24 page-2026-10-09T02-11-23-930Z.yml" [ref=f1e2118] [cursor=pointer]:
+          - /url: "#event-37b285c9-5386-4661-a5fc-3da8902e48ef"
+          - generic [ref=f1e2123]:
+            - generic [ref=f1e2124]:
+              - generic [ref=f1e2125]: File · modified
+              - generic [ref=f1e2126]: 07:41:24
+            - paragraph [ref=f1e2127]: page-2026-10-09T02-11-23-930Z.yml
+      - listitem [ref=f1e2129]:
+        - link "File · modified 07:41:27 .playwright-cli" [ref=f1e2131] [cursor=pointer]:
+          - /url: "#event-5bcaf122-8f26-494f-b227-b05e647e5af7"
+          - generic [ref=f1e2136]:
+            - generic [ref=f1e2137]:
+              - generic [ref=f1e2138]: File · modified
+              - generic [ref=f1e2139]: 07:41:27
+            - paragraph [ref=f1e2140]: .playwright-cli
+      - listitem [ref=f1e2142]:
+        - link "File · modified 07:41:28 page-2026-10-09T02-11-28-354Z.yml" [ref=f1e2144] [cursor=pointer]:
+          - /url: "#event-42e72e64-b0a2-4fa6-9af2-a55d8e13e5e2"
+          - generic [ref=f1e2149]:
+            - generic [ref=f1e2150]:
+              - generic [ref=f1e2151]: File · modified
+              - generic [ref=f1e2152]: 07:41:28
+            - paragraph [ref=f1e2153]: page-2026-10-09T02-11-28-354Z.yml
+      - listitem [ref=f1e2155]:
+        - link "File · modified 07:41:32 .playwright-cli" [ref=f1e2157] [cursor=pointer]:
+          - /url: "#event-410e872e-6a06-42e5-bb96-dd6307f76cd9"
+          - generic [ref=f1e2162]:
+            - generic [ref=f1e2163]:
+              - generic [ref=f1e2164]: File · modified
+              - generic [ref=f1e2165]: 07:41:32
+            - paragraph [ref=f1e2166]: .playwright-cli
+      - listitem [ref=f1e2168]:
+        - link "File · modified 07:41:33 page-2026-10-09T02-11-33-167Z.yml" [ref=f1e2170] [cursor=pointer]:
+          - /url: "#event-278b469e-4a27-4936-bfe4-f4a509d9ac1e"
+          - generic [ref=f1e2175]:
+            - generic [ref=f1e2176]:
+              - generic [ref=f1e2177]: File · modified
+              - generic [ref=f1e2178]: 07:41:33
+            - paragraph [ref=f1e2179]: page-2026-10-09T02-11-33-167Z.yml
+      - listitem [ref=f1e2181]:
+        - link "File · modified 07:41:37 .playwright-cli" [ref=f1e2183] [cursor=pointer]:
+          - /url: "#event-ad4461ec-0f9f-4246-8cb9-1d40c3c557b0"
+          - generic [ref=f1e2188]:
+            - generic [ref=f1e2189]:
+              - generic [ref=f1e2190]: File · modified
+              - generic [ref=f1e2191]: 07:41:37
+            - paragraph [ref=f1e2192]: .playwright-cli
+      - listitem [ref=f1e2194]:
+        - link "File · modified 07:41:48 page-2026-10-09T02-11-48-302Z.yml" [ref=f1e2196] [cursor=pointer]:
+          - /url: "#event-89c76223-8d28-408f-a180-ea81578488e1"
+          - generic [ref=f1e2201]:
+            - generic [ref=f1e2202]:
+              - generic [ref=f1e2203]: File · modified
+              - generic [ref=f1e2204]: 07:41:48
+            - paragraph [ref=f1e2205]: page-2026-10-09T02-11-48-302Z.yml
+      - listitem [ref=f1e2207]:
+        - link "File · modified 07:41:50 .playwright-cli" [ref=f1e2209] [cursor=pointer]:
+          - /url: "#event-1f445270-e7e1-48b0-ad8c-b43e27a8d16e"
+          - generic [ref=f1e2214]:
+            - generic [ref=f1e2215]:
+              - generic [ref=f1e2216]: File · modified
+              - generic [ref=f1e2217]: 07:41:50
+            - paragraph [ref=f1e2218]: .playwright-cli
+      - listitem [ref=f1e2220]:
+        - link "File · modified 07:41:50 page-2026-10-09T02-11-50-350Z.yml" [ref=f1e2222] [cursor=pointer]:
+          - /url: "#event-631468cd-8bc2-4041-b992-4b4dcf57103b"
+          - generic [ref=f1e2227]:
+            - generic [ref=f1e2228]:
+              - generic [ref=f1e2229]: File · modified
+              - generic [ref=f1e2230]: 07:41:50
+            - paragraph [ref=f1e2231]: page-2026-10-09T02-11-50-350Z.yml
+      - listitem [ref=f1e2233]:
+        - link "File · modified 07:41:52 .playwright-cli" [ref=f1e2235] [cursor=pointer]:
+          - /url: "#event-b2e27b05-ac34-4316-9baa-b90a7dfc3835"
+          - generic [ref=f1e2240]:
+            - generic [ref=f1e2241]:
+              - generic [ref=f1e2242]: File · modified
+              - generic [ref=f1e2243]: 07:41:52
+            - paragraph [ref=f1e2244]: .playwright-cli
+      - listitem [ref=f1e2246]:
+        - link "File · modified 07:42:18 App.css" [ref=f1e2248] [cursor=pointer]:
+          - /url: "#event-163b30b4-0b74-47c2-9fe7-b824a29a9554"
+          - generic [ref=f1e2253]:
+            - generic [ref=f1e2254]:
+              - generic [ref=f1e2255]: File · modified
+              - generic [ref=f1e2256]: 07:42:18
+            - paragraph [ref=f1e2257]: App.css
+      - listitem [ref=f1e2259]:
+        - link "File · modified 07:42:29 page-2026-10-09T02-12-28-915Z.yml" [ref=f1e2261] [cursor=pointer]:
+          - /url: "#event-2d0df796-da9f-4c68-b6b2-3c4870ddc0b7"
+          - generic [ref=f1e2266]:
+            - generic [ref=f1e2267]:
+              - generic [ref=f1e2268]: File · modified
+              - generic [ref=f1e2269]: 07:42:29
+            - paragraph [ref=f1e2270]: page-2026-10-09T02-12-28-915Z.yml
+      - listitem [ref=f1e2272]:
+        - link "File · modified 07:42:32 .playwright-cli" [ref=f1e2274] [cursor=pointer]:
+          - /url: "#event-f8565017-5e88-42de-a6b2-ae38f73b1001"
+          - generic [ref=f1e2279]:
+            - generic [ref=f1e2280]:
+              - generic [ref=f1e2281]: File · modified
+              - generic [ref=f1e2282]: 07:42:32
+            - paragraph [ref=f1e2283]: .playwright-cli
+      - listitem [ref=f1e2285]:
+        - link "File · modified 07:42:45 page-2026-10-09T02-12-45-321Z.yml" [ref=f1e2287] [cursor=pointer]:
+          - /url: "#event-9925d66d-614f-4491-9402-004e507215fa"
+          - generic [ref=f1e2292]:
+            - generic [ref=f1e2293]:
+              - generic [ref=f1e2294]: File · modified
+              - generic [ref=f1e2295]: 07:42:45
+            - paragraph [ref=f1e2296]: page-2026-10-09T02-12-45-321Z.yml
+      - listitem [ref=f1e2298]:
+        - link "File · modified 07:42:47 .playwright-cli" [ref=f1e2300] [cursor=pointer]:
+          - /url: "#event-46a16dc5-ba5c-4d85-acad-304c42025e49"
+          - generic [ref=f1e2305]:
+            - generic [ref=f1e2306]:
+              - generic [ref=f1e2307]: File · modified
+              - generic [ref=f1e2308]: 07:42:47
+            - paragraph [ref=f1e2309]: .playwright-cli
+      - listitem [ref=f1e2311]:
+        - link "File · modified 07:43:14 page-2026-10-09T02-13-14-063Z.yml" [ref=f1e2313] [cursor=pointer]:
+          - /url: "#event-d4d4ab0f-4a23-4ef3-aac1-9be9fc28a650"
+          - generic [ref=f1e2318]:
+            - generic [ref=f1e2319]:
+              - generic [ref=f1e2320]: File · modified
+              - generic [ref=f1e2321]: 07:43:14
+            - paragraph [ref=f1e2322]: page-2026-10-09T02-13-14-063Z.yml
+      - listitem [ref=f1e2324]:
+        - link "File · modified 07:43:17 .playwright-cli" [ref=f1e2326] [cursor=pointer]:
+          - /url: "#event-c9aed318-abb4-4379-9275-df6d089939e8"
+          - generic [ref=f1e2331]:
+            - generic [ref=f1e2332]:
+              - generic [ref=f1e2333]: File · modified
+              - generic [ref=f1e2334]: 07:43:17
+            - paragraph [ref=f1e2335]: .playwright-cli
+      - listitem [ref=f1e2337]:
+        - link "File · modified 07:44:49 page-2026-10-09T02-14-49-754Z.yml" [ref=f1e2339] [cursor=pointer]:
+          - /url: "#event-03ff09e9-a0a2-43d1-ab4b-aa526cdffcf6"
+          - generic [ref=f1e2344]:
+            - generic [ref=f1e2345]:
+              - generic [ref=f1e2346]: File · modified
+              - generic [ref=f1e2347]: 07:44:49
+            - paragraph [ref=f1e2348]: page-2026-10-09T02-14-49-754Z.yml
+      - listitem [ref=f1e2350]:
+        - link "File · modified 07:44:52 .playwright-cli" [ref=f1e2352] [cursor=pointer]:
+          - /url: "#event-b5c0ce0b-2ef4-470b-a6ee-cd6b140fc243"
+          - generic [ref=f1e2357]:
+            - generic [ref=f1e2358]:
+              - generic [ref=f1e2359]: File · modified
+              - generic [ref=f1e2360]: 07:44:52
+            - paragraph [ref=f1e2361]: .playwright-cli
+      - listitem [ref=f1e2363]:
+        - link "File · modified 07:44:56 page-2026-10-09T02-14-56-713Z.yml" [ref=f1e2365] [cursor=pointer]:
+          - /url: "#event-19c55e79-28e9-4727-8ca3-130ce42f5092"
+          - generic [ref=f1e2370]:
+            - generic [ref=f1e2371]:
+              - generic [ref=f1e2372]: File · modified
+              - generic [ref=f1e2373]: 07:44:56
+            - paragraph [ref=f1e2374]: page-2026-10-09T02-14-56-713Z.yml
+      - listitem [ref=f1e2376]:
+        - link "File · modified 07:44:57 .playwright-cli" [ref=f1e2378] [cursor=pointer]:
+          - /url: "#event-b3a8f2c4-7f97-4f86-a822-d6532b0b2eaf"
+          - generic [ref=f1e2383]:
+            - generic [ref=f1e2384]:
+              - generic [ref=f1e2385]: File · modified
+              - generic [ref=f1e2386]: 07:44:57
+            - paragraph [ref=f1e2387]: .playwright-cli
+      - listitem [ref=f1e2389]:
+        - link "File · modified 07:45:19 page-2026-10-09T02-15-18-883Z.yml" [ref=f1e2391] [cursor=pointer]:
+          - /url: "#event-2e5c6906-29b5-4eca-91e9-8e1c0c107d14"
+          - generic [ref=f1e2396]:
+            - generic [ref=f1e2397]:
+              - generic [ref=f1e2398]: File · modified
+              - generic [ref=f1e2399]: 07:45:19
+            - paragraph [ref=f1e2400]: page-2026-10-09T02-15-18-883Z.yml
+      - listitem [ref=f1e2402]:
+        - link "File · modified 07:45:22 .playwright-cli" [ref=f1e2404] [cursor=pointer]:
+          - /url: "#event-6fa6419f-5603-4268-95ea-e91b850b4a58"
+          - generic [ref=f1e2409]:
+            - generic [ref=f1e2410]:
+              - generic [ref=f1e2411]: File · modified
+              - generic [ref=f1e2412]: 07:45:22
+            - paragraph [ref=f1e2413]: .playwright-cli
+      - listitem [ref=f1e2415]:
+        - link "File · modified 07:45:25 page-2026-10-09T02-15-25-625Z.yml" [ref=f1e2417] [cursor=pointer]:
+          - /url: "#event-110d6bf9-32e2-4225-bf3f-7ab5082c4fe6"
+          - generic [ref=f1e2422]:
+            - generic [ref=f1e2423]:
+              - generic [ref=f1e2424]: File · modified
+              - generic [ref=f1e2425]: 07:45:25
+            - paragraph [ref=f1e2426]: page-2026-10-09T02-15-25-625Z.yml
+      - listitem [ref=f1e2428]:
+        - link "File · modified 07:45:28 .playwright-cli" [ref=f1e2430] [cursor=pointer]:
+          - /url: "#event-3295e522-4b44-42ee-a67a-8ced2ea6ce03"
+          - generic [ref=f1e2435]:
+            - generic [ref=f1e2436]:
+              - generic [ref=f1e2437]: File · modified
+              - generic [ref=f1e2438]: 07:45:28
+            - paragraph [ref=f1e2439]: .playwright-cli
+      - listitem [ref=f1e2441]:
+        - link "File · modified 07:46:01 .vite-temp" [ref=f1e2443] [cursor=pointer]:
+          - /url: "#event-1419d5a2-2a2e-4bba-99ea-09f29f2b7ce5"
+          - generic [ref=f1e2448]:
+            - generic [ref=f1e2449]:
+              - generic [ref=f1e2450]: File · modified
+              - generic [ref=f1e2451]: 07:46:01
+            - paragraph [ref=f1e2452]: .vite-temp
+      - listitem [ref=f1e2454]:
+        - link "File · deleted 07:46:01 vite.config.ts.timestamp-1791512160938-3c55844d13ceb8.mjs" [ref=f1e2456] [cursor=pointer]:
+          - /url: "#event-84ed2f2c-493e-463f-9a08-c0b0da0a72ce"
+          - generic [ref=f1e2461]:
+            - generic [ref=f1e2462]:
+              - generic [ref=f1e2463]: File · deleted
+              - generic [ref=f1e2464]: 07:46:01
+            - paragraph [ref=f1e2465]: vite.config.ts.timestamp-1791512160938-3c55844d13ceb8.mjs
+      - listitem [ref=f1e2467]:
+        - button "7 files changed · 07:46:02" [ref=f1e2469] [cursor=pointer]:
+          - paragraph [ref=f1e2474]:
+            - text: ▸ 7 files changed
+            - generic [ref=f1e2475]: · 07:46:02
+      - listitem [ref=f1e2477]:
+        - button "17 files deleted · 07:46:43" [ref=f1e2479] [cursor=pointer]:
+          - paragraph [ref=f1e2484]:
+            - text: ▸ 17 files deleted
+            - generic [ref=f1e2485]: · 07:46:43
+      - listitem [ref=f1e3675]:
+        - 'link "Git 07:46:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3677] [cursor=pointer]':
+          - /url: "#event-5a677eab-d262-45dc-9900-39ac1474ee65"
+          - generic [ref=f1e3684]:
+            - generic [ref=f1e3685]:
+              - generic [ref=f1e3686]: Git
+              - generic [ref=f1e3687]: 07:46:47
+            - paragraph [ref=f1e3688]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3689]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e2487]:
+        - button "4 files modified · 08:07:38" [ref=f1e2489] [cursor=pointer]:
+          - paragraph [ref=f1e2494]:
+            - text: ▸ 4 files modified
+            - generic [ref=f1e2495]: · 08:07:38
+      - listitem [ref=f1e2497]:
+        - button "3 files modified · 15:47:18" [ref=f1e2499] [cursor=pointer]:
+          - paragraph [ref=f1e2504]:
+            - text: ▸ 3 files modified
+            - generic [ref=f1e2505]: · 15:47:18
+      - listitem [ref=f1e2507]:
+        - button "32 files modified · 15:47:19" [ref=f1e2509] [cursor=pointer]:
+          - paragraph [ref=f1e2514]:
+            - text: ▸ 32 files modified
+            - generic [ref=f1e2515]: · 15:47:19
+      - listitem [ref=f1e2517]:
+        - button "9 files modified · 15:47:20" [ref=f1e2519] [cursor=pointer]:
+          - paragraph [ref=f1e2524]:
+            - text: ▸ 9 files modified
+            - generic [ref=f1e2525]: · 15:47:20
+      - listitem [ref=f1e2527]:
+        - button "20 files modified · 15:47:22" [ref=f1e2529] [cursor=pointer]:
+          - paragraph [ref=f1e2534]:
+            - text: ▸ 20 files modified
+            - generic [ref=f1e2535]: · 15:47:22
+      - listitem [ref=f1e2537]:
+        - link "File · modified 15:48:52 index.html" [ref=f1e2539] [cursor=pointer]:
+          - /url: "#event-3c04056a-72f1-4f2e-a3df-2baaac7eb9b3"
+          - generic [ref=f1e2544]:
+            - generic [ref=f1e2545]:
+              - generic [ref=f1e2546]: File · modified
+              - generic [ref=f1e2547]: 15:48:52
+            - paragraph [ref=f1e2548]: index.html
+      - listitem [ref=f1e2550]:
+        - link "File · modified 15:54:47 project-id" [ref=f1e2552] [cursor=pointer]:
+          - /url: "#event-a2a8f675-52c2-41c7-861f-95fd7c952094"
+          - generic [ref=f1e2556]:
+            - generic [ref=f1e2557]:
+              - generic [ref=f1e2558]: File · modified
+              - generic [ref=f1e2559]: 15:54:47
+            - paragraph [ref=f1e2560]: project-id
+      - listitem [ref=f1e2562]:
+        - link "File · modified 15:56:03 run.ts" [ref=f1e2564] [cursor=pointer]:
+          - /url: "#event-759a1c45-6b9e-44e8-9580-52891d9bb5f4"
+          - generic [ref=f1e2569]:
+            - generic [ref=f1e2570]:
+              - generic [ref=f1e2571]: File · modified
+              - generic [ref=f1e2572]: 15:56:03
+            - paragraph [ref=f1e2573]: run.ts
+      - listitem [ref=f1e2575]:
+        - link "File · modified 15:56:03 start.ts" [ref=f1e2577] [cursor=pointer]:
+          - /url: "#event-852b85d6-3fa3-44bf-a592-0933ce5a9594"
+          - generic [ref=f1e2582]:
+            - generic [ref=f1e2583]:
+              - generic [ref=f1e2584]: File · modified
+              - generic [ref=f1e2585]: 15:56:03
+            - paragraph [ref=f1e2586]: start.ts
+      - listitem [ref=f1e2588]:
+        - link "File · modified 15:56:05 package.json" [ref=f1e2590] [cursor=pointer]:
+          - /url: "#event-d5bb79fb-aa71-4263-b838-0fec6b9f80d2"
+          - generic [ref=f1e2595]:
+            - generic [ref=f1e2596]:
+              - generic [ref=f1e2597]: File · modified
+              - generic [ref=f1e2598]: 15:56:05
+            - paragraph [ref=f1e2599]: package.json
+      - listitem [ref=f1e2601]:
+        - link "File · modified 15:56:05 index.ts" [ref=f1e2603] [cursor=pointer]:
+          - /url: "#event-34df9d52-25bc-451c-8f71-dc5f240b2305"
+          - generic [ref=f1e2608]:
+            - generic [ref=f1e2609]:
+              - generic [ref=f1e2610]: File · modified
+              - generic [ref=f1e2611]: 15:56:05
+            - paragraph [ref=f1e2612]: index.ts
+      - listitem [ref=f1e2614]:
+        - button "3 files modified · 15:56:51" [ref=f1e2616] [cursor=pointer]:
+          - paragraph [ref=f1e2621]:
+            - text: ▸ 3 files modified
+            - generic [ref=f1e2622]: · 15:56:51
+      - listitem [ref=f1e2624]:
+        - link "File · modified 15:56:54 watcher.ts" [ref=f1e2626] [cursor=pointer]:
+          - /url: "#event-790df8fa-0f06-4fab-ac96-d6f0b975119e"
+          - generic [ref=f1e2631]:
+            - generic [ref=f1e2632]:
+              - generic [ref=f1e2633]: File · modified
+              - generic [ref=f1e2634]: 15:56:54
+            - paragraph [ref=f1e2635]: watcher.ts
+      - listitem [ref=f1e2637]:
+        - link "File · modified 15:58:29 index.ts" [ref=f1e2639] [cursor=pointer]:
+          - /url: "#event-793767ff-30d2-401b-9428-37fec3b5d154"
+          - generic [ref=f1e2644]:
+            - generic [ref=f1e2645]:
+              - generic [ref=f1e2646]: File · modified
+              - generic [ref=f1e2647]: 15:58:29
+            - paragraph [ref=f1e2648]: index.ts
+      - listitem [ref=f1e2650]:
+        - button "16 files modified · 15:58:37" [ref=f1e2652] [cursor=pointer]:
+          - paragraph [ref=f1e2657]:
+            - text: ▸ 16 files modified
+            - generic [ref=f1e2658]: · 15:58:37
+      - listitem [ref=f1e2660]:
+        - link "File · modified 16:00:42 server.ts" [ref=f1e2662] [cursor=pointer]:
+          - /url: "#event-77e50912-4589-40c9-80b5-1257f45062ed"
+          - generic [ref=f1e2667]:
+            - generic [ref=f1e2668]:
+              - generic [ref=f1e2669]: File · modified
+              - generic [ref=f1e2670]: 16:00:42
+            - paragraph [ref=f1e2671]: server.ts
+      - listitem [ref=f1e3691]:
+        - 'link "Git 16:00:47 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3693] [cursor=pointer]':
+          - /url: "#event-78ec36b5-3a5a-41aa-a0fc-70bda342a17f"
+          - generic [ref=f1e3700]:
+            - generic [ref=f1e3701]:
+              - generic [ref=f1e3702]: Git
+              - generic [ref=f1e3703]: 16:00:47
+            - paragraph [ref=f1e3704]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3705]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e2673]:
+        - link "File · modified 16:00:49 start.ts" [ref=f1e2675] [cursor=pointer]:
+          - /url: "#event-7430664c-bf2d-4c4d-85a9-a68443823480"
+          - generic [ref=f1e2680]:
+            - generic [ref=f1e2681]:
+              - generic [ref=f1e2682]: File · modified
+              - generic [ref=f1e2683]: 16:00:49
+            - paragraph [ref=f1e2684]: start.ts
+      - listitem [ref=f1e3707]:
+        - 'link "Git 16:00:52 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3709] [cursor=pointer]':
+          - /url: "#event-508876ae-eb9d-4f0b-a834-381502d6e879"
+          - generic [ref=f1e3716]:
+            - generic [ref=f1e3717]:
+              - generic [ref=f1e3718]: Git
+              - generic [ref=f1e3719]: 16:00:52
+            - paragraph [ref=f1e3720]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3721]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e2686]:
+        - link "File · modified 16:01:20 run.ts" [ref=f1e2688] [cursor=pointer]:
+          - /url: "#event-92c9e0ab-2b5b-4b44-9f52-10e624f67a20"
+          - generic [ref=f1e2693]:
+            - generic [ref=f1e2694]:
+              - generic [ref=f1e2695]: File · modified
+              - generic [ref=f1e2696]: 16:01:20
+            - paragraph [ref=f1e2697]: run.ts
+      - listitem [ref=f1e3723]:
+        - 'link "Git 16:01:22 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3725] [cursor=pointer]':
+          - /url: "#event-0a7a171e-ee4f-4b43-a41f-aa3389651bb4"
+          - generic [ref=f1e3732]:
+            - generic [ref=f1e3733]:
+              - generic [ref=f1e3734]: Git
+              - generic [ref=f1e3735]: 16:01:22
+            - paragraph [ref=f1e3736]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3737]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e2699]:
+        - link "File · modified 16:01:42 run.ts" [ref=f1e2701] [cursor=pointer]:
+          - /url: "#event-ba4732f5-af2b-4160-8c9b-eccd8e0ddd48"
+          - generic [ref=f1e2706]:
+            - generic [ref=f1e2707]:
+              - generic [ref=f1e2708]: File · modified
+              - generic [ref=f1e2709]: 16:01:42
+            - paragraph [ref=f1e2710]: run.ts
+      - listitem [ref=f1e2712]:
+        - button "10 files modified · 16:02:25" [ref=f1e2714] [cursor=pointer]:
+          - paragraph [ref=f1e2719]:
+            - text: ▸ 10 files modified
+            - generic [ref=f1e2720]: · 16:02:25
+      - listitem [ref=f1e2722]:
+        - button "118 files modified · 16:02:26" [ref=f1e2724] [cursor=pointer]:
+          - paragraph [ref=f1e2729]:
+            - text: ▸ 118 files modified
+            - generic [ref=f1e2730]: · 16:02:26
+      - listitem [ref=f1e2732]:
+        - button "24 files modified · 16:02:31" [ref=f1e2734] [cursor=pointer]:
+          - paragraph [ref=f1e2739]:
+            - text: ▸ 24 files modified
+            - generic [ref=f1e2740]: · 16:02:31
+      - listitem [ref=f1e2742]:
+        - link "File · modified 16:03:47 App.tsx" [ref=f1e2744] [cursor=pointer]:
+          - /url: "#event-3cfebfee-4cfe-4b38-8185-954f29752fb9"
+          - generic [ref=f1e2749]:
+            - generic [ref=f1e2750]:
+              - generic [ref=f1e2751]: File · modified
+              - generic [ref=f1e2752]: 16:03:47
+            - paragraph [ref=f1e2753]: App.tsx
+      - listitem [ref=f1e2755]:
+        - link "File · modified 16:03:47 Header.tsx" [ref=f1e2757] [cursor=pointer]:
+          - /url: "#event-fc573cbf-953b-48d8-bd5e-c69dd2c492f1"
+          - generic [ref=f1e2762]:
+            - generic [ref=f1e2763]:
+              - generic [ref=f1e2764]: File · modified
+              - generic [ref=f1e2765]: 16:03:47
+            - paragraph [ref=f1e2766]: Header.tsx
+      - listitem [ref=f1e2768]:
+        - link "File · modified 16:03:53 Header.css" [ref=f1e2770] [cursor=pointer]:
+          - /url: "#event-d61fa9d9-dd93-4bb3-bd86-28f1a2bd3bb8"
+          - generic [ref=f1e2775]:
+            - generic [ref=f1e2776]:
+              - generic [ref=f1e2777]: File · modified
+              - generic [ref=f1e2778]: 16:03:53
+            - paragraph [ref=f1e2779]: Header.css
+      - listitem [ref=f1e2781]:
+        - link "File · modified 16:03:53 icons.tsx" [ref=f1e2783] [cursor=pointer]:
+          - /url: "#event-6d14cdff-1183-4ba7-911b-6a2a3fc5a5ae"
+          - generic [ref=f1e2788]:
+            - generic [ref=f1e2789]:
+              - generic [ref=f1e2790]: File · modified
+              - generic [ref=f1e2791]: 16:03:53
+            - paragraph [ref=f1e2792]: icons.tsx
+      - listitem [ref=f1e2794]:
+        - link "File · modified 16:04:27 App.tsx" [ref=f1e2796] [cursor=pointer]:
+          - /url: "#event-8a062068-5a60-4059-9e76-7bd91f654fd6"
+          - generic [ref=f1e2801]:
+            - generic [ref=f1e2802]:
+              - generic [ref=f1e2803]: File · modified
+              - generic [ref=f1e2804]: 16:04:27
+            - paragraph [ref=f1e2805]: App.tsx
+      - listitem [ref=f1e2807]:
+        - link "File · modified 16:04:42 Header.tsx" [ref=f1e2809] [cursor=pointer]:
+          - /url: "#event-c7bc2fc0-e62b-4f36-8c00-7f1785d9e1ab"
+          - generic [ref=f1e2814]:
+            - generic [ref=f1e2815]:
+              - generic [ref=f1e2816]: File · modified
+              - generic [ref=f1e2817]: 16:04:42
+            - paragraph [ref=f1e2818]: Header.tsx
+      - listitem [ref=f1e2820]:
+        - link "File · modified 16:04:56 icons.tsx" [ref=f1e2822] [cursor=pointer]:
+          - /url: "#event-396878b9-a82b-42eb-9cf2-713ee465ab54"
+          - generic [ref=f1e2827]:
+            - generic [ref=f1e2828]:
+              - generic [ref=f1e2829]: File · modified
+              - generic [ref=f1e2830]: 16:04:56
+            - paragraph [ref=f1e2831]: icons.tsx
+      - listitem [ref=f1e2833]:
+        - link "File · modified 16:04:56 Header.css" [ref=f1e2835] [cursor=pointer]:
+          - /url: "#event-43258b89-35ce-49c3-9f0c-d47c3beece09"
+          - generic [ref=f1e2840]:
+            - generic [ref=f1e2841]:
+              - generic [ref=f1e2842]: File · modified
+              - generic [ref=f1e2843]: 16:04:56
+            - paragraph [ref=f1e2844]: Header.css
+      - listitem [ref=f1e2846]:
+        - button "12 files modified · 16:05:05" [ref=f1e2848] [cursor=pointer]:
+          - paragraph [ref=f1e2853]:
+            - text: ▸ 12 files modified
+            - generic [ref=f1e2854]: · 16:05:05
+      - listitem [ref=f1e2856]:
+        - button "44 files modified · 16:05:16" [ref=f1e2858] [cursor=pointer]:
+          - paragraph [ref=f1e2863]:
+            - text: ▸ 44 files modified
+            - generic [ref=f1e2864]: · 16:05:16
+      - listitem [ref=f1e2866]:
+        - button "102 files modified · 16:05:17" [ref=f1e2868] [cursor=pointer]:
+          - paragraph [ref=f1e2873]:
+            - text: ▸ 102 files modified
+            - generic [ref=f1e2874]: · 16:05:17
+      - listitem [ref=f1e2876]:
+        - button "40 files changed · 16:05:29" [ref=f1e2878] [cursor=pointer]:
+          - paragraph [ref=f1e2883]:
+            - text: ▸ 40 files changed
+            - generic [ref=f1e2884]: · 16:05:29
+      - listitem [ref=f1e2886]:
+        - button "5 files changed · 16:05:31" [ref=f1e2888] [cursor=pointer]:
+          - paragraph [ref=f1e2893]:
+            - text: ▸ 5 files changed
+            - generic [ref=f1e2894]: · 16:05:31
+      - listitem [ref=f1e2896]:
+        - link "File · modified 16:06:15 .freebuff" [ref=f1e2898] [cursor=pointer]:
+          - /url: "#event-c9bd9767-2eef-4732-9678-afb70c37241d"
+          - generic [ref=f1e2903]:
+            - generic [ref=f1e2904]:
+              - generic [ref=f1e2905]: File · modified
+              - generic [ref=f1e2906]: 16:06:15
+            - paragraph [ref=f1e2907]: .freebuff
+      - listitem [ref=f1e2909]:
+        - link "File · modified 16:06:15 .freebuff" [ref=f1e2911] [cursor=pointer]:
+          - /url: "#event-0810ffc6-a1cf-44ca-a66f-568c4344e94c"
+          - generic [ref=f1e2916]:
+            - generic [ref=f1e2917]:
+              - generic [ref=f1e2918]: File · modified
+              - generic [ref=f1e2919]: 16:06:15
+            - paragraph [ref=f1e2920]: .freebuff
+      - listitem [ref=f1e2922]:
+        - button "5 files modified · 16:06:16" [ref=f1e2924] [cursor=pointer]:
+          - paragraph [ref=f1e2929]:
+            - text: ▸ 5 files modified
+            - generic [ref=f1e2930]: · 16:06:16
+      - listitem [ref=f1e3739]:
+        - 'link "Git 16:08:39 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3741] [cursor=pointer]':
+          - /url: "#event-10ace227-8510-4a4d-962c-e64317a172a7"
+          - generic [ref=f1e3748]:
+            - generic [ref=f1e3749]:
+              - generic [ref=f1e3750]: Git
+              - generic [ref=f1e3751]: 16:08:39
+            - paragraph [ref=f1e3752]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3753]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e3755]:
+        - link "Command exit 1 16:09:04 --help Evidence trail" [ref=f1e3757] [cursor=pointer]:
+          - /url: "#event-64a09dea-804b-41c6-b7c6-41f1183719ba"
+          - generic [ref=f1e3762]:
+            - generic [ref=f1e3763]:
+              - generic [ref=f1e3764]: Command
+              - generic [ref=f1e3765]: exit 1
+              - generic [ref=f1e3766]: 16:09:04
+            - paragraph [ref=f1e3767]: "--help"
+            - generic "Evidence trail" [ref=f1e3768]:
+              - generic [ref=f1e3769]: Command failed
+              - generic [ref=f1e3771]:
+                - generic [aria-hidden] [ref=f1e3772]: →
+                - generic [ref=f1e3773]:
+                  - text: File changed
+                  - generic [ref=f1e3774]: styles
+              - generic [ref=f1e3775]:
+                - generic [aria-hidden] [ref=f1e3776]: →
+                - generic [ref=f1e3777]: Error match
+              - generic [ref=f1e4197]:
+                - generic [aria-hidden] [ref=f1e4198]: →
+                - generic [ref=f1e4199]:
+                  - text: Evidence
+                  - generic [ref=f1e4200]: 1 signal
+      - listitem [ref=f1e3779]:
+        - link "Error Failed 16:09:04 '--help' is not recognized as an internal or external command, operable program Evidence trail" [ref=f1e3781] [cursor=pointer]:
+          - /url: "#event-447e6c78-9cc7-4e7c-ae63-59f69667971d"
+          - generic [ref=f1e3786]:
+            - generic [ref=f1e3787]:
+              - generic [ref=f1e3788]: Error
+              - generic [ref=f1e3789]: Failed
+              - generic [ref=f1e3790]: 16:09:04
+            - paragraph [ref=f1e3791]: "'--help' is not recognized as an internal or external command, operable program"
+            - generic "Evidence trail" [ref=f1e3792]:
+              - generic [ref=f1e3793]: Error captured
+              - generic [ref=f1e3795]:
+                - generic [aria-hidden] [ref=f1e3796]: →
+                - generic [ref=f1e3797]:
+                  - text: File changed
+                  - generic [ref=f1e3798]: styles
+              - generic [ref=f1e3799]:
+                - generic [aria-hidden] [ref=f1e3800]: →
+                - generic [ref=f1e3801]: Error match
+              - generic [ref=f1e4201]:
+                - generic [aria-hidden] [ref=f1e4202]: →
+                - generic [ref=f1e4203]:
+                  - text: Evidence
+                  - generic [ref=f1e4204]: 1 signal
+      - listitem [ref=f1e2980]:
+        - button "5 files changed · 16:09:27" [ref=f1e2982] [cursor=pointer]:
+          - paragraph [ref=f1e2987]:
+            - text: ▸ 5 files changed
+            - generic [ref=f1e2988]: · 16:09:27
+      - listitem [ref=f1e2990]:
+        - button "12 files modified · 16:09:40" [ref=f1e2992] [cursor=pointer]:
+          - paragraph [ref=f1e2997]:
+            - text: ▸ 12 files modified
+            - generic [ref=f1e2998]: · 16:09:40
+      - listitem [ref=f1e3000]:
+        - button "96 files modified · 16:09:41" [ref=f1e3002] [cursor=pointer]:
+          - paragraph [ref=f1e3007]:
+            - text: ▸ 96 files modified
+            - generic [ref=f1e3008]: · 16:09:41
+      - listitem [ref=f1e3010]:
+        - button "4 files modified · 16:10:09" [ref=f1e3012] [cursor=pointer]:
+          - paragraph [ref=f1e3017]:
+            - text: ▸ 4 files modified
+            - generic [ref=f1e3018]: · 16:10:09
+      - listitem [ref=f1e3020]:
+        - link "File · modified 16:10:10 page-2026-10-09T10-40-09-990Z.yml" [ref=f1e3022] [cursor=pointer]:
+          - /url: "#event-e2ecd7c6-464f-4abd-b3ec-634b0c944483"
+          - generic [ref=f1e3027]:
+            - generic [ref=f1e3028]:
+              - generic [ref=f1e3029]: File · modified
+              - generic [ref=f1e3030]: 16:10:10
+            - paragraph [ref=f1e3031]: page-2026-10-09T10-40-09-990Z.yml
+      - listitem [ref=f1e3803]:
+        - 'link "Git 16:10:14 commit 55a5c57 Digital Black Box core implementation branch: ui-glass-redesign" [ref=f1e3805] [cursor=pointer]':
+          - /url: "#event-eed983c7-84ab-4b83-ad45-e799f2cb5c55"
+          - generic [ref=f1e3812]:
+            - generic [ref=f1e3813]:
+              - generic [ref=f1e3814]: Git
+              - generic [ref=f1e3815]: 16:10:14
+            - paragraph [ref=f1e3816]: commit 55a5c57 Digital Black Box core implementation
+            - paragraph [ref=f1e3817]: "branch: ui-glass-redesign"
+      - listitem [ref=f1e3034]:
+        - link "File · modified 16:10:14 .playwright-cli" [ref=f1e3036] [cursor=pointer]:
+          - /url: "#event-0ab43cc3-c470-4e27-8e73-26333371c633"
+          - generic [ref=f1e3041]:
+            - generic [ref=f1e3042]:
+              - generic [ref=f1e3043]: File · modified
+              - generic [ref=f1e3044]: 16:10:14
+            - paragraph [ref=f1e3045]: .playwright-cli
+      - listitem [ref=f1e3819]:
+        - link "Command 16:10:53 echo E2E_MARKER_REC1" [ref=f1e3821] [cursor=pointer]:
+          - /url: "#event-7e168354-2e84-44b1-944f-dd6729a8a02c"
+          - generic [ref=f1e3826]:
+            - generic [ref=f1e3827]:
+              - generic [ref=f1e3828]: Command
+              - generic [ref=f1e3829]: 16:10:53
+            - paragraph [ref=f1e3830]: echo E2E_MARKER_REC1
+      - listitem [ref=f1e3060]:
+        - link "File · modified 16:13:07 page-2026-10-09T10-43-07-241Z.yml" [ref=f1e3062] [cursor=pointer]:
+          - /url: "#event-732fc14b-ced5-4212-957b-ceac180788ad"
+          - generic [ref=f1e3067]:
+            - generic [ref=f1e3068]:
+              - generic [ref=f1e3069]: File · modified
+              - generic [ref=f1e3070]: 16:13:07
+            - paragraph [ref=f1e3071]: page-2026-10-09T10-43-07-241Z.yml
+      - listitem [ref=f1e3073]:
+        - link "File · modified 16:13:10 .playwright-cli" [ref=f1e3075] [cursor=pointer]:
+          - /url: "#event-ff484288-7ac4-416c-a117-79a9b2d338f0"
+          - generic [ref=f1e3080]:
+            - generic [ref=f1e3081]:
+              - generic [ref=f1e3082]: File · modified
+              - generic [ref=f1e3083]: 16:13:10
+            - paragraph [ref=f1e3084]: .playwright-cli
+      - listitem [ref=f1e3832]:
+        - link "Command 16:13:12 echo E2E_MARKER_RESUMED1" [ref=f1e3834] [cursor=pointer]:
+          - /url: "#event-14c0219f-4658-41e0-942e-1ef6b3146607"
+          - generic [ref=f1e3839]:
+            - generic [ref=f1e3840]:
+              - generic [ref=f1e3841]: Command
+              - generic [ref=f1e3842]: 16:13:12
+            - paragraph [ref=f1e3843]: echo E2E_MARKER_RESUMED1
+      - listitem [ref=f1e3099]:
+        - link "File · modified 16:14:09 page-2026-10-09T10-44-09-652Z.yml" [ref=f1e3101] [cursor=pointer]:
+          - /url: "#event-bc2601c6-8cd5-4aa1-9a6f-276d123a598c"
+          - generic [ref=f1e3106]:
+            - generic [ref=f1e3107]:
+              - generic [ref=f1e3108]: File · modified
+              - generic [ref=f1e3109]: 16:14:09
+            - paragraph [ref=f1e3110]: page-2026-10-09T10-44-09-652Z.yml
+      - listitem [ref=f1e3112]:
+        - link "File · modified 16:14:10 .playwright-cli" [ref=f1e3114] [cursor=pointer]:
+          - /url: "#event-90e2d68d-53cf-425a-8577-d98383ea38b7"
+          - generic [ref=f1e3119]:
+            - generic [ref=f1e3120]:
+              - generic [ref=f1e3121]: File · modified
+              - generic [ref=f1e3122]: 16:14:10
+            - paragraph [ref=f1e3123]: .playwright-cli
+      - listitem [ref=f1e3845]:
+        - link "Command 16:14:14 echo E2E_MARKER_AFTERSTART" [ref=f1e3847] [cursor=pointer]:
+          - /url: "#event-1c4cfa63-04b6-45a8-92b0-c67737a9ba13"
+          - generic [ref=f1e3852]:
+            - generic [ref=f1e3853]:
+              - generic [ref=f1e3854]: Command
+              - generic [ref=f1e3855]: 16:14:14
+            - paragraph [ref=f1e3856]: echo E2E_MARKER_AFTERSTART
+      - listitem [ref=f1e3138]:
+        - link "File · modified 16:15:30 final-header.png" [ref=f1e3140] [cursor=pointer]:
+          - /url: "#event-9bc1e176-27c5-447d-acf7-ed104b2055aa"
+          - generic [ref=f1e3145]:
+            - generic [ref=f1e3146]:
+              - generic [ref=f1e3147]: File · modified
+              - generic [ref=f1e3148]: 16:15:30
+            - paragraph [ref=f1e3149]: final-header.png
+      - listitem [ref=f1e3151]:
+        - link "File · modified 16:15:32 .playwright-cli" [ref=f1e3153] [cursor=pointer]:
+          - /url: "#event-d66b3c2a-fe70-4d84-9169-83abaea3091d"
+          - generic [ref=f1e3158]:
+            - generic [ref=f1e3159]:
+              - generic [ref=f1e3160]: File · modified
+              - generic [ref=f1e3161]: 16:15:32
+            - paragraph [ref=f1e3162]: .playwright-cli
+      - listitem [ref=f1e3164]:
+        - link "File · modified 16:15:32 page-2026-10-09T10-45-32-479Z.yml" [ref=f1e3166] [cursor=pointer]:
+          - /url: "#event-e272a492-98f2-41d2-93cc-7e96b94a2044"
+          - generic [ref=f1e3171]:
+            - generic [ref=f1e3172]:
+              - generic [ref=f1e3173]: File · modified
+              - generic [ref=f1e3174]: 16:15:32
+            - paragraph [ref=f1e3175]: page-2026-10-09T10-45-32-479Z.yml
+      - listitem [ref=f1e3177]:
+        - link "File · modified 16:15:35 .playwright-cli" [ref=f1e3179] [cursor=pointer]:
+          - /url: "#event-c9579bb6-5a41-4c84-b254-e450c771cc34"
+          - generic [ref=f1e3184]:
+            - generic [ref=f1e3185]:
+              - generic [ref=f1e3186]: File · modified
+              - generic [ref=f1e3187]: 16:15:35
+            - paragraph [ref=f1e3188]: .playwright-cli
+      - listitem [ref=f1e3190]:
+        - button "25 files modified · 16:47:22" [ref=f1e3192] [cursor=pointer]:
+          - paragraph [ref=f1e3197]:
+            - text: ▸ 25 files modified
+            - generic [ref=f1e3198]: · 16:47:22
+      - listitem [ref=f1e3200]:
+        - button "39 files modified · 16:47:23" [ref=f1e3202] [cursor=pointer]:
+          - paragraph [ref=f1e3207]:
+            - text: ▸ 39 files modified
+            - generic [ref=f1e3208]: · 16:47:23
+      - listitem [ref=f1e3210]:
+        - link "File · modified 16:50:30 Header.tsx" [ref=f1e3212] [cursor=pointer]:
+          - /url: "#event-611d9e65-dd54-4a4e-80cb-21d1b9274a50"
+          - generic [ref=f1e3217]:
+            - generic [ref=f1e3218]:
+              - generic [ref=f1e3219]: File · modified
+              - generic [ref=f1e3220]: 16:50:30
+            - paragraph [ref=f1e3221]: Header.tsx
+      - listitem [ref=f1e3223]:
+        - link "File · modified 16:50:30 icons.tsx" [ref=f1e3225] [cursor=pointer]:
+          - /url: "#event-2baf6fad-08d6-47a5-a4c6-a89da7605fb5"
+          - generic [ref=f1e3230]:
+            - generic [ref=f1e3231]:
+              - generic [ref=f1e3232]: File · modified
+              - generic [ref=f1e3233]: 16:50:30
+            - paragraph [ref=f1e3234]: icons.tsx
+      - listitem [ref=f1e3236]:
+        - link "File · modified 16:51:20 icons.tsx" [ref=f1e3238] [cursor=pointer]:
+          - /url: "#event-0b0ee5d2-f08d-44f6-89bd-ef0df5e65580"
+          - generic [ref=f1e3243]:
+            - generic [ref=f1e3244]:
+              - generic [ref=f1e3245]: File · modified
+              - generic [ref=f1e3246]: 16:51:20
+            - paragraph [ref=f1e3247]: icons.tsx
+      - listitem [ref=f1e3249]:
+        - link "File · modified 16:51:38 Header.css" [ref=f1e3251] [cursor=pointer]:
+          - /url: "#event-df677ee3-4d47-4fa2-9931-675596011e7c"
+          - generic [ref=f1e3256]:
+            - generic [ref=f1e3257]:
+              - generic [ref=f1e3258]: File · modified
+              - generic [ref=f1e3259]: 16:51:38
+            - paragraph [ref=f1e3260]: Header.css
+      - listitem [ref=f1e3262]:
+        - link "File · modified 16:51:53 Header.css" [ref=f1e3264] [cursor=pointer]:
+          - /url: "#event-dd1a43ea-770a-4fb6-933f-8e56a2fa544c"
+          - generic [ref=f1e3269]:
+            - generic [ref=f1e3270]:
+              - generic [ref=f1e3271]: File · modified
+              - generic [ref=f1e3272]: 16:51:53
+            - paragraph [ref=f1e3273]: Header.css
+      - listitem [ref=f1e3275]:
+        - link "File · modified 16:55:21 project-id" [ref=f1e3277] [cursor=pointer]:
+          - /url: "#event-9e7bd5e7-6e60-4211-948a-60b7543e361b"
+          - generic [ref=f1e3281]:
+            - generic [ref=f1e3282]:
+              - generic [ref=f1e3283]: File · modified
+              - generic [ref=f1e3284]: 16:55:21
+            - paragraph [ref=f1e3285]: project-id
+      - listitem [ref=f1e3287]:
+        - link "File · modified 16:56:04 Timeline.tsx" [ref=f1e3289] [cursor=pointer]:
+          - /url: "#event-87361526-79a4-4cec-a1ae-7634fa5b8ad6"
+          - generic [ref=f1e3294]:
+            - generic [ref=f1e3295]:
+              - generic [ref=f1e3296]: File · modified
+              - generic [ref=f1e3297]: 16:56:04
+            - paragraph [ref=f1e3298]: Timeline.tsx
+      - listitem [ref=f1e3300]:
+        - link "File · modified 16:56:21 Timeline.tsx" [ref=f1e3302] [cursor=pointer]:
+          - /url: "#event-a934af5d-3f8a-4351-9036-ed5aea28e11c"
+          - generic [ref=f1e3307]:
+            - generic [ref=f1e3308]:
+              - generic [ref=f1e3309]: File · modified
+              - generic [ref=f1e3310]: 16:56:21
+            - paragraph [ref=f1e3311]: Timeline.tsx
+      - listitem [ref=f1e3313]:
+        - link "File · modified 16:56:27 App.tsx" [ref=f1e3315] [cursor=pointer]:
+          - /url: "#event-03c21934-6c4a-49ca-9f92-eb309a07ecd5"
+          - generic [ref=f1e3320]:
+            - generic [ref=f1e3321]:
+              - generic [ref=f1e3322]: File · modified
+              - generic [ref=f1e3323]: 16:56:27
+            - paragraph [ref=f1e3324]: App.tsx
+      - listitem [ref=f1e3326]:
+        - link "File · modified 16:57:20 Timeline.css" [ref=f1e3328] [cursor=pointer]:
+          - /url: "#event-55064ed6-4e46-49fa-a679-e475ceef768b"
+          - generic [ref=f1e3333]:
+            - generic [ref=f1e3334]:
+              - generic [ref=f1e3335]: File · modified
+              - generic [ref=f1e3336]: 16:57:20
+            - paragraph [ref=f1e3337]: Timeline.css
+      - listitem [ref=f1e3339]:
+        - link "File · modified 16:57:30 Timeline.tsx" [ref=f1e3341] [cursor=pointer]:
+          - /url: "#event-8dd37bf3-725a-4809-b1b9-7628374d6076"
+          - generic [ref=f1e3346]:
+            - generic [ref=f1e3347]:
+              - generic [ref=f1e3348]: File · modified
+              - generic [ref=f1e3349]: 16:57:30
+            - paragraph [ref=f1e3350]: Timeline.tsx
+      - listitem [ref=f1e3352]:
+        - link "File · modified 16:57:34 package.json" [ref=f1e3354] [cursor=pointer]:
+          - /url: "#event-0c6c2c0f-7f7f-4bb3-9869-83cb819c32ec"
+          - generic [ref=f1e3359]:
+            - generic [ref=f1e3360]:
+              - generic [ref=f1e3361]: File · modified
+              - generic [ref=f1e3362]: 16:57:34
+            - paragraph [ref=f1e3363]: package.json
+      - listitem [ref=f1e3365]:
+        - link "File · modified 16:58:28 InvestigationPanel.tsx" [ref=f1e3367] [cursor=pointer]:
+          - /url: "#event-fe75f418-8b3d-4b48-bc52-194f0f3290e1"
+          - generic [ref=f1e3372]:
+            - generic [ref=f1e3373]:
+              - generic [ref=f1e3374]: File · modified
+              - generic [ref=f1e3375]: 16:58:28
+            - paragraph [ref=f1e3376]: InvestigationPanel.tsx
+      - listitem [ref=f1e3378]:
+        - link "File · modified 16:59:23 InvestigationPanel.tsx" [ref=f1e3380] [cursor=pointer]:
+          - /url: "#event-d053ea26-3220-4f25-a7a9-93952beb75dc"
+          - generic [ref=f1e3385]:
+            - generic [ref=f1e3386]:
+              - generic [ref=f1e3387]: File · modified
+              - generic [ref=f1e3388]: 16:59:23
+            - paragraph [ref=f1e3389]: InvestigationPanel.tsx
+      - listitem [ref=f1e3391]:
+        - link "File · modified 16:59:23 InvestigationPanel.css" [ref=f1e3393] [cursor=pointer]:
+          - /url: "#event-9daa8320-cbb5-4826-a7dd-e34883527dba"
+          - generic [ref=f1e3398]:
+            - generic [ref=f1e3399]:
+              - generic [ref=f1e3400]: File · modified
+              - generic [ref=f1e3401]: 16:59:23
+            - paragraph [ref=f1e3402]: InvestigationPanel.css
+      - listitem [ref=f1e3404]:
+        - link "File · modified 16:59:55 InvestigationPanel.tsx" [ref=f1e3406] [cursor=pointer]:
+          - /url: "#event-dda8eb00-5aad-46f9-954a-76a2f0b20df6"
+          - generic [ref=f1e3411]:
+            - generic [ref=f1e3412]:
+              - generic [ref=f1e3413]: File · modified
+              - generic [ref=f1e3414]: 16:59:55
+            - paragraph [ref=f1e3415]: InvestigationPanel.tsx
+      - listitem [ref=f1e3417]:
+        - button "3 files changed · 17:00:05" [ref=f1e3419] [cursor=pointer]:
+          - paragraph [ref=f1e3424]:
+            - text: ▸ 3 files changed
+            - generic [ref=f1e3425]: · 17:00:05
+      - listitem [ref=f1e3427]:
+        - button "4 files changed · 17:00:09" [ref=f1e3429] [cursor=pointer]:
+          - paragraph [ref=f1e3434]:
+            - text: ▸ 4 files changed
+            - generic [ref=f1e3435]: · 17:00:09
+      - listitem [ref=f1e3437]:
+        - button "4 files modified · 17:00:10" [ref=f1e3439] [cursor=pointer]:
+          - paragraph [ref=f1e3444]:
+            - text: ▸ 4 files modified
+            - generic [ref=f1e3445]: · 17:00:10
+      - listitem [ref=f1e3447]:
+        - link "File · modified 17:00:31 page-2026-10-09T11-30-31-078Z.yml" [ref=f1e3449] [cursor=pointer]:
+          - /url: "#event-f8f3c91e-b998-44c1-8ebc-4ce7053e2ec3"
+          - generic [ref=f1e3454]:
+            - generic [ref=f1e3455]:
+              - generic [ref=f1e3456]: File · modified
+              - generic [ref=f1e3457]: 17:00:31
+            - paragraph [ref=f1e3458]: page-2026-10-09T11-30-31-078Z.yml
+      - listitem [ref=f1e3460]:
+        - link "File · modified 17:00:33 .playwright-cli" [ref=f1e3462] [cursor=pointer]:
+          - /url: "#event-4d1b8879-0078-4f41-bbf8-b7fd7f50f769"
+          - generic [ref=f1e3467]:
+            - generic [ref=f1e3468]:
+              - generic [ref=f1e3469]: File · modified
+              - generic [ref=f1e3470]: 17:00:33
+            - paragraph [ref=f1e3471]: .playwright-cli
+      - listitem [ref=f1e3473]:
+        - link "File · modified 17:01:17 page-2026-10-09T11-31-16-927Z.yml" [ref=f1e3475] [cursor=pointer]:
+          - /url: "#event-df15a295-3e28-45da-8088-9502aeb7f16f"
+          - generic [ref=f1e3480]:
+            - generic [ref=f1e3481]:
+              - generic [ref=f1e3482]: File · modified
+              - generic [ref=f1e3483]: 17:01:17
+            - paragraph [ref=f1e3484]: page-2026-10-09T11-31-16-927Z.yml
+      - listitem [ref=f1e3486]:
+        - link "File · modified 17:01:18 .playwright-cli" [ref=f1e3488] [cursor=pointer]:
+          - /url: "#event-737b1e98-7a8f-45fd-83f0-edcf9a9c8a16"
+          - generic [ref=f1e3493]:
+            - generic [ref=f1e3494]:
+              - generic [ref=f1e3495]: File · modified
+              - generic [ref=f1e3496]: 17:01:18
+            - paragraph [ref=f1e3497]: .playwright-cli
+      - listitem [ref=f1e3499]:
+        - link "File · modified 17:01:22 page-2026-10-09T11-31-21-842Z.yml" [ref=f1e3501] [cursor=pointer]:
+          - /url: "#event-bfa156f0-713a-47c6-a426-9b88631a1e2a"
+          - generic [ref=f1e3506]:
+            - generic [ref=f1e3507]:
+              - generic [ref=f1e3508]: File · modified
+              - generic [ref=f1e3509]: 17:01:22
+            - paragraph [ref=f1e3510]: page-2026-10-09T11-31-21-842Z.yml
+      - listitem [ref=f1e3512]:
+        - link "File · modified 17:01:23 .playwright-cli" [ref=f1e3514] [cursor=pointer]:
+          - /url: "#event-65983435-aaaa-41a2-8c9f-bdd031236237"
+          - generic [ref=f1e3519]:
+            - generic [ref=f1e3520]:
+              - generic [ref=f1e3521]: File · modified
+              - generic [ref=f1e3522]: 17:01:23
+            - paragraph [ref=f1e3523]: .playwright-cli
+      - listitem [ref=f1e3525]:
+        - link "File · modified 17:01:26 page-2026-10-09T11-31-25-961Z.yml" [ref=f1e3527] [cursor=pointer]:
+          - /url: "#event-070f12cc-52eb-423b-8373-32f1f3b3f7ca"
+          - generic [ref=f1e3532]:
+            - generic [ref=f1e3533]:
+              - generic [ref=f1e3534]: File · modified
+              - generic [ref=f1e3535]: 17:01:26
+            - paragraph [ref=f1e3536]: page-2026-10-09T11-31-25-961Z.yml
+      - listitem [ref=f1e3538]:
+        - link "File · modified 17:01:28 .playwright-cli" [ref=f1e3540] [cursor=pointer]:
+          - /url: "#event-267f0e22-371b-41b6-942b-ad9556a8da9f"
+          - generic [ref=f1e3545]:
+            - generic [ref=f1e3546]:
+              - generic [ref=f1e3547]: File · modified
+              - generic [ref=f1e3548]: 17:01:28
+            - paragraph [ref=f1e3549]: .playwright-cli
+      - listitem [ref=f1e3551]:
+        - link "File · modified 17:01:29 page-2026-10-09T11-31-29-746Z.yml" [ref=f1e3553] [cursor=pointer]:
+          - /url: "#event-a40f484d-7eee-4093-85c6-d32246742f84"
+          - generic [ref=f1e3558]:
+            - generic [ref=f1e3559]:
+              - generic [ref=f1e3560]: File · modified
+              - generic [ref=f1e3561]: 17:01:29
+            - paragraph [ref=f1e3562]: page-2026-10-09T11-31-29-746Z.yml
+      - listitem [ref=f1e3564]:
+        - link "File · modified 17:01:33 .playwright-cli" [ref=f1e3566] [cursor=pointer]:
+          - /url: "#event-3ac218a1-0cf8-410c-85b0-c90d606d681d"
+          - generic [ref=f1e3571]:
+            - generic [ref=f1e3572]:
+              - generic [ref=f1e3573]: File · modified
+              - generic [ref=f1e3574]: 17:01:33
+            - paragraph [ref=f1e3575]: .playwright-cli
+      - listitem [ref=f1e3577]:
+        - link "File · modified 17:01:33 page-2026-10-09T11-31-33-706Z.yml" [ref=f1e3579] [cursor=pointer]:
+          - /url: "#event-b229ebbd-ac9b-4943-a541-f859ec76caa6"
+          - generic [ref=f1e3584]:
+            - generic [ref=f1e3585]:
+              - generic [ref=f1e3586]: File · modified
+              - generic [ref=f1e3587]: 17:01:33
+            - paragraph [ref=f1e3588]: page-2026-10-09T11-31-33-706Z.yml
+      - listitem [ref=f1e3590]:
+        - link "File · modified 17:01:38 page-2026-10-09T11-31-38-287Z.yml" [ref=f1e3592] [cursor=pointer]:
+          - /url: "#event-e50ba118-1f40-4e87-bdfc-5ec3cbe95a78"
+          - generic [ref=f1e3597]:
+            - generic [ref=f1e3598]:
+              - generic [ref=f1e3599]: File · modified
+              - generic [ref=f1e3600]: 17:01:38
+            - paragraph [ref=f1e3601]: page-2026-10-09T11-31-38-287Z.yml
+      - listitem [ref=f1e3603]:
+        - link "File · modified 17:01:38 .playwright-cli" [ref=f1e3605] [cursor=pointer]:
+          - /url: "#event-9092480e-53e8-4411-b7cf-0747ea4651ae"
+          - generic [ref=f1e3610]:
+            - generic [ref=f1e3611]:
+              - generic [ref=f1e3612]: File · modified
+              - generic [ref=f1e3613]: 17:01:38
+            - paragraph [ref=f1e3614]: .playwright-cli
+      - listitem [ref=f1e3859]:
+        - link "File · modified 17:01:59 page-2026-10-09T11-31-59-391Z.yml" [ref=f1e3861] [cursor=pointer]:
+          - /url: "#event-3a79d948-a933-4379-8e47-30a94cc9e0e5"
+          - generic [ref=f1e3866]:
+            - generic [ref=f1e3867]:
+              - generic [ref=f1e3868]: File · modified
+              - generic [ref=f1e3869]: 17:01:59
+            - paragraph [ref=f1e3870]: page-2026-10-09T11-31-59-391Z.yml
+      - listitem [ref=f1e3872]:
+        - link "File · modified 17:02:03 .playwright-cli" [ref=f1e3874] [cursor=pointer]:
+          - /url: "#event-da0d28c5-5d1e-4d5c-a87a-7eb1e1f35979"
+          - generic [ref=f1e3879]:
+            - generic [ref=f1e3880]:
+              - generic [ref=f1e3881]: File · modified
+              - generic [ref=f1e3882]: 17:02:03
+            - paragraph [ref=f1e3883]: .playwright-cli
+      - listitem [ref=f1e4078]:
+        - link "File · modified 17:02:04 page-2026-10-09T11-32-04-725Z.yml" [ref=f1e4080] [cursor=pointer]:
+          - /url: "#event-e7f434e2-00fe-4653-80c7-d50ae20b2e4d"
+          - generic [ref=f1e4085]:
+            - generic [ref=f1e4086]:
+              - generic [ref=f1e4087]: File · modified
+              - generic [ref=f1e4088]: 17:02:04
+            - paragraph [ref=f1e4089]: page-2026-10-09T11-32-04-725Z.yml
+      - listitem [ref=f1e4091]:
+        - link "File · modified 17:02:08 .playwright-cli" [ref=f1e4093] [cursor=pointer]:
+          - /url: "#event-e3fa60d0-5ba5-4f1d-b905-4c68311017fe"
+          - generic [ref=f1e4098]:
+            - generic [ref=f1e4099]:
+              - generic [ref=f1e4100]: File · modified
+              - generic [ref=f1e4101]: 17:02:08
+            - paragraph [ref=f1e4102]: .playwright-cli
+      - listitem [ref=f1e4104]:
+        - link "File · modified 17:03:25 page-2026-10-09T11-33-25-065Z.yml" [ref=f1e4106] [cursor=pointer]:
+          - /url: "#event-0e869018-a6e9-4935-b4d1-13b18634e2da"
+          - generic [ref=f1e4111]:
+            - generic [ref=f1e4112]:
+              - generic [ref=f1e4113]: File · modified
+              - generic [ref=f1e4114]: 17:03:25
+            - paragraph [ref=f1e4115]: page-2026-10-09T11-33-25-065Z.yml
+      - listitem [ref=f1e4117]:
+        - link "File · modified 17:03:29 .playwright-cli" [ref=f1e4119] [cursor=pointer]:
+          - /url: "#event-9afc2ad8-8af3-4bbe-b9f5-aea3e82b33c2"
+          - generic [ref=f1e4124]:
+            - generic [ref=f1e4125]:
+              - generic [ref=f1e4126]: File · modified
+              - generic [ref=f1e4127]: 17:03:29
+            - paragraph [ref=f1e4128]: .playwright-cli
+      - listitem [ref=f1e4130]:
+        - link "File · modified 17:03:35 page-2026-10-09T11-33-35-751Z.yml" [ref=f1e4132] [cursor=pointer]:
+          - /url: "#event-582131a8-ebe6-4585-a059-91d9265859fc"
+          - generic [ref=f1e4137]:
+            - generic [ref=f1e4138]:
+              - generic [ref=f1e4139]: File · modified
+              - generic [ref=f1e4140]: 17:03:35
+            - paragraph [ref=f1e4141]: page-2026-10-09T11-33-35-751Z.yml
+      - listitem [ref=f1e4143]:
+        - link "File · modified 17:03:39 .playwright-cli" [ref=f1e4145] [cursor=pointer]:
+          - /url: "#event-af775c52-00b2-476e-a720-3018d065994f"
+          - generic [ref=f1e4150]:
+            - generic [ref=f1e4151]:
+              - generic [ref=f1e4152]: File · modified
+              - generic [ref=f1e4153]: 17:03:39
+            - paragraph [ref=f1e4154]: .playwright-cli
+      - listitem [ref=f1e4156]:
+        - link "File · modified 17:04:16 phaseA-timeline.png" [ref=f1e4158] [cursor=pointer]:
+          - /url: "#event-49467f42-fc4a-4a37-8f4b-5a2164c1f844"
+          - generic [ref=f1e4163]:
+            - generic [ref=f1e4164]:
+              - generic [ref=f1e4165]: File · modified
+              - generic [ref=f1e4166]: 17:04:16
+            - paragraph [ref=f1e4167]: phaseA-timeline.png
+      - listitem [ref=f1e4169]:
+        - link "File · modified 17:04:19 .playwright-cli" [ref=f1e4171] [cursor=pointer]:
+          - /url: "#event-f08dad88-157d-4cfc-a724-7fa888b7e935"
+          - generic [ref=f1e4176]:
+            - generic [ref=f1e4177]:
+              - generic [ref=f1e4178]: File · modified
+              - generic [ref=f1e4179]: 17:04:19
+            - paragraph [ref=f1e4180]: .playwright-cli
+      - listitem [ref=f1e4206]:
+        - link "Command exit 1 17:05:10 node -e console.error('PHASE_A_PANEL_TEST failure'); process.exit(1) Evidence trail" [ref=f1e4208] [cursor=pointer]:
+          - /url: "#event-f1c62a3c-8726-46db-a927-e2d825a8bb7c"
+          - generic [ref=f1e4213]:
+            - generic [ref=f1e4214]:
+              - generic [ref=f1e4215]: Command
+              - generic [ref=f1e4216]: exit 1
+              - generic [ref=f1e4217]: 17:05:10
+            - paragraph [ref=f1e4218]: node -e console.error('PHASE_A_PANEL_TEST failure'); process.exit(1)
+            - generic "Evidence trail" [ref=f1e4219]:
+              - generic [ref=f1e4220]: Command failed
+              - generic [ref=f1e4222]:
+                - generic [aria-hidden] [ref=f1e4223]: →
+                - generic [ref=f1e4224]:
+                  - text: File changed
+                  - generic [ref=f1e4225]: .playwright-cli
+              - generic [ref=f1e4226]:
+                - generic [aria-hidden] [ref=f1e4227]: →
+                - generic [ref=f1e4228]: Error match
+              - generic [ref=f1e4229]:
+                - generic [aria-hidden] [ref=f1e4230]: →
+                - generic [ref=f1e4231]:
+                  - text: Evidence
+                  - generic [ref=f1e4232]: 1 signal
+      - listitem [ref=f1e4234]:
+        - link "Error Failed 17:05:10 [eval]:1 console.error('PHASE_A_PANEL_TEST ^^^^^^^^^^^^^^^^^^^ Evidence trail" [ref=f1e4236] [cursor=pointer]:
+          - /url: "#event-70581f64-a1aa-43e3-bb08-85e5b431c9f2"
+          - generic [ref=f1e4241]:
+            - generic [ref=f1e4242]:
+              - generic [ref=f1e4243]: Error
+              - generic [ref=f1e4244]: Failed
+              - generic [ref=f1e4245]: 17:05:10
+            - paragraph [ref=f1e4246]: "[eval]:1 console.error('PHASE_A_PANEL_TEST ^^^^^^^^^^^^^^^^^^^"
+            - generic "Evidence trail" [ref=f1e4247]:
+              - generic [ref=f1e4248]: Error captured
+              - generic [ref=f1e4250]:
+                - generic [aria-hidden] [ref=f1e4251]: →
+                - generic [ref=f1e4252]:
+                  - text: File changed
+                  - generic [ref=f1e4253]: .playwright-cli
+              - generic [ref=f1e4254]:
+                - generic [aria-hidden] [ref=f1e4255]: →
+                - generic [ref=f1e4256]: Error match
+              - generic [ref=f1e4257]:
+                - generic [aria-hidden] [ref=f1e4258]: →
+                - generic [ref=f1e4259]:
+                  - text: Evidence
+                  - generic [ref=f1e4260]: 1 signal
+  - button "Investigate failure" [ref=f1e4262] [cursor=pointer]
+  - generic [ref=f1e4265]:
+    - generic [ref=f1e4266]:
+      - generic [ref=f1e4267]: Failure Investigation
+      - button "Close" [ref=f1e4269] [cursor=pointer]
+    - generic [ref=f1e4270]:
+      - generic [ref=f1e4271]:
+        - generic [ref=f1e4272]: Verdict
+        - generic [ref=f1e4273]: Deterministic evidence
+      - paragraph [ref=f1e4274]: The recorded evidence is ambiguous — no single change clearly explains this failure.
+      - generic [ref=f1e4275]:
+        - generic [ref=f1e4276]: 25%
+        - generic [ref=f1e4277]: confidence · Low
+    - generic [ref=f1e4280]:
+      - generic [ref=f1e4281]:
+        - generic [ref=f1e4282]: What happened
+        - generic [ref=f1e4283]: Deterministic evidence
+      - list [ref=f1e4284]:
+        - listitem [ref=f1e4285]: Last passing build at 2026-10-09T10:44:14.255Z
+        - listitem [ref=f1e4286]: .playwright-cli\final-header.png changed at 2026-10-09T10:45:30.648Z
+        - listitem [ref=f1e4287]: Build failed at 2026-10-09T11:35:10.362Z
+    - generic [ref=f1e4288]:
+      - generic [ref=f1e4289]:
+        - generic [ref=f1e4290]: Why we think so
+        - generic [ref=f1e4291]: Deterministic evidence
+      - list [ref=f1e4292]:
+        - listitem [ref=f1e4293]:
+          - generic [ref=f1e4294]: "File changed in window: .playwright-cli\\final-header.png"
+          - generic [ref=f1e4295]: event 9bc1e176
+    - generic [ref=f1e4296]:
+      - generic [ref=f1e4297]:
+        - generic [ref=f1e4298]: What changed
+        - generic [ref=f1e4299]: Deterministic evidence
+      - generic [ref=f1e4300]: .playwright-cli\final-header.png
+    - generic [ref=f1e4301]:
+      - generic [ref=f1e4302]:
+        - generic [ref=f1e4303]: The error
+        - generic [ref=f1e4304]: Deterministic evidence
+      - generic [ref=f1e4305]: "[eval]:1 console.error('PHASE_A_PANEL_TEST ^^^^^^^^^^^^^^^^^^^ Expected ',', got '<eof>' SyntaxError: Invalid or unexpected token at makeContextifyScript (node:internal/vm:194:14) at compileScript (node:internal/process/execution:388:10) at evalTypeScript (node:internal/process/execution:260:22) at node:internal/main/eval_string:71:3 Node.js v24.21.0"
+    - generic [ref=f1e4306]:
+      - generic [ref=f1e4307]:
+        - generic [ref=f1e4308]: Other possible causes
+        - generic [ref=f1e4309]: Deterministic evidence
+      - list [ref=f1e4310]:
+        - listitem [ref=f1e4311]:
+          - generic [ref=f1e4312]: .playwright-cli
+          - generic [ref=f1e4313]: 25%
+        - listitem [ref=f1e4314]:
+          - generic [ref=f1e4315]: .playwright-cli\page-2026-10-09T10-45-32-479Z.yml
+          - generic [ref=f1e4316]: 25%
+    - generic [ref=f1e4317]:
+      - generic [ref=f1e4318]:
+        - generic [ref=f1e4319]: Explanation
+        - generic [ref=f1e4320]: AI-written
+      - paragraph [ref=f1e4321]: A narrative of the evidence above — not proof. The verdict, confidence and signals come from the deterministic engine.
+      - generic [ref=f1e4322]: "The Digital Black Box could not identify a clear root cause with high confidence. Confidence: 25% — the recorded evidence is ambiguous or incomplete. Changes observed in the investigation window: • .playwright-cli\\final-header.png (score: 25/100) • .playwright-cli (score: 25/100) • .playwright-cli\\page-2026-10-09T10-45-32-479Z.yml (score: 25/100) The evidence does not clearly point to one of these as the cause. The failure may be related to one of these changes, or to something the Black Box did not record. Evidence chain: BUILD PASSED 2026-10-09T10:44:14.255Z FILE CHANGED .playwright-cli\\final-header.png 2026-10-09T10:45:30.648Z BUILD FAILED 2026-10-09T11:35:10.362Z ERROR MATCH [eval]:1 console.error('PHASE_A_PANEL_TEST ^^^^^^^^^^^^^^^^^^^ Expected ',', got '<eof>' SyntaxError: Invalid or unexpected token at makeContextifyScript (node:internal/vm:194:14) at compileScript (node:internal/process/execution:388:10) at evalTypeScript (node:internal/process/execution:260:22) at node:internal/main/eval_string:71:3 Node.js v24.21.0 NO_CLEAR_ROOT_CAUSE 25/100 Error captured: [eval]:1 console.error('PHASE_A_PANEL_TEST ^^^^^^^^^^^^^^^^^^^ Expected ',', got '<eof>' SyntaxError: Invalid or unexpected token at makeContextifyScript (node:internal/vm:194:14) at compileScript (node:internal/process/execution:388:10) at evalTypeScript (node:internal/process/execution:260:22) at node:internal/main/eval_string:71:3 Node.js v24.21.0 Possible explanations the Black Box cannot distinguish without more evidence: the failure may come from an external dependency, environment, network, configuration, a nondeterministic test, or a change the Black Box did not observe. This explanation narrates the recorded evidence and its gaps. The score and outcome were determined by the deterministic evidence engine, not by an AI model."

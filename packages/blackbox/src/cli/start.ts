@@ -51,10 +51,14 @@ export class StartCommand {
 
     this.watcher = new Watcher(project, {
       onFileChange: (filePath, changeType) => {
+        // Do not append events while paused or stopped.
+        if (this.server.getRecordingStatus() !== "recording") return;
         const event = createFileEvent(project, sessionId, filePath, changeType);
         this.storage.insertEvent({ ...event });
       },
       onGitActivity: (branch, commits, changedPaths) => {
+        // Do not append events while paused or stopped.
+        if (this.server.getRecordingStatus() !== "recording") return;
         const event = createGitEvent(project, sessionId, { branch: branch as string | undefined, commits, changedPaths });
         this.storage.insertEvent({ ...event });
       },

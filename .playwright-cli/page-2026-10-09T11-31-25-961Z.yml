@@ -1,0 +1,83 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: Digital Black Box
+      - generic [ref=f1e12]: forensic build console
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Project
+        - generic [ref=f1e60]: devpost-ai-project
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: Events
+        - generic [ref=f1e18]: "847"
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]: Health
+        - generic [ref=f1e21]: Healthy
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: Recording
+      - button "Pause recording" [ref=f1e28] [cursor=pointer]: Pause
+      - button "Stop recording" [ref=f1e33] [cursor=pointer]: Stop
+  - generic [ref=f1e37]:
+    - generic [ref=f1e38]:
+      - heading "Event trace" [level=2] [ref=f1e39]
+      - generic [ref=f1e40]: 5 of 847 events
+      - generic [ref=f1e41]:
+        - tab "All" [ref=f1e42] [cursor=pointer]
+        - tab "Build" [ref=f1e43] [cursor=pointer]
+        - tab "Files" [ref=f1e44] [cursor=pointer]
+        - tab "Commands" [active] [selected] [ref=f1e45] [cursor=pointer]
+        - tab "Errors" [ref=f1e46] [cursor=pointer]
+        - tab "Git" [ref=f1e47] [cursor=pointer]
+    - list [ref=f1e63]:
+      - listitem [ref=f1e1603]:
+        - 'link "Command exit 1 07:07:04 node -e console.error(''BLACKBOX_TEST_ERROR: intentional failure''); process.exit(1)" [ref=f1e1605] [cursor=pointer]':
+          - /url: "#event-f9ab44ce-6d70-4c50-8303-af8fa9a6d30f"
+          - generic [ref=f1e1610]:
+            - generic [ref=f1e1611]:
+              - generic [ref=f1e1612]: Command
+              - generic [ref=f1e1613]: exit 1
+              - generic [ref=f1e1614]: 07:07:04
+            - paragraph [ref=f1e1615]: "node -e console.error('BLACKBOX_TEST_ERROR: intentional failure'); process.exit(1)"
+      - listitem [ref=f1e1617]:
+        - link "Command exit 1 16:09:04 --help Evidence trail" [ref=f1e1619] [cursor=pointer]:
+          - /url: "#event-64a09dea-804b-41c6-b7c6-41f1183719ba"
+          - generic [ref=f1e1624]:
+            - generic [ref=f1e1625]:
+              - generic [ref=f1e1626]: Command
+              - generic [ref=f1e1627]: exit 1
+              - generic [ref=f1e1628]: 16:09:04
+            - paragraph [ref=f1e1629]: "--help"
+            - generic "Evidence trail" [ref=f1e1630]:
+              - generic [ref=f1e1631]: Command failed
+              - generic [ref=f1e1633]:
+                - generic [aria-hidden] [ref=f1e1634]: →
+                - generic [ref=f1e1635]:
+                  - text: File changed
+                  - generic [ref=f1e1636]: styles
+              - generic [ref=f1e1637]:
+                - generic [aria-hidden] [ref=f1e1638]: →
+                - generic [ref=f1e1639]: Error match
+      - listitem [ref=f1e1641]:
+        - link "Command 16:10:53 echo E2E_MARKER_REC1" [ref=f1e1643] [cursor=pointer]:
+          - /url: "#event-7e168354-2e84-44b1-944f-dd6729a8a02c"
+          - generic [ref=f1e1648]:
+            - generic [ref=f1e1649]:
+              - generic [ref=f1e1650]: Command
+              - generic [ref=f1e1651]: 16:10:53
+            - paragraph [ref=f1e1652]: echo E2E_MARKER_REC1
+      - listitem [ref=f1e1654]:
+        - link "Command 16:13:12 echo E2E_MARKER_RESUMED1" [ref=f1e1656] [cursor=pointer]:
+          - /url: "#event-14c0219f-4658-41e0-942e-1ef6b3146607"
+          - generic [ref=f1e1661]:
+            - generic [ref=f1e1662]:
+              - generic [ref=f1e1663]: Command
+              - generic [ref=f1e1664]: 16:13:12
+            - paragraph [ref=f1e1665]: echo E2E_MARKER_RESUMED1
+      - listitem [ref=f1e1667]:
+        - link "Command 16:14:14 echo E2E_MARKER_AFTERSTART" [ref=f1e1669] [cursor=pointer]:
+          - /url: "#event-1c4cfa63-04b6-45a8-92b0-c67737a9ba13"
+          - generic [ref=f1e1674]:
+            - generic [ref=f1e1675]:
+              - generic [ref=f1e1676]: Command
+              - generic [ref=f1e1677]: 16:14:14
+            - paragraph [ref=f1e1678]: echo E2E_MARKER_AFTERSTART

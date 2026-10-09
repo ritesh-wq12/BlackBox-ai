@@ -1,6 +1,18 @@
+import { useState } from "react";
 import "./InvestigationPanel.css";
+import {
+  buildAiPrompt,
+  buildReportMarkdown,
+  copyText,
+  downloadMarkdown,
+  isFailureEvent,
+  type PromptEvent,
+} from "../lib/aiPrompt";
 
-export type InvestigationOutcome = "LIKELY_ROOT_CAUSE" | "NO_CLEAR_ROOT_CAUSE" | "NO_CAUSAL_CHANGE_DETECTED";
+export type InvestigationOutcome =
+  | "LIKELY_ROOT_CAUSE"
+  | "NO_CLEAR_ROOT_CAUSE"
+  | "NO_CAUSAL_CHANGE_DETECTED";
 
 interface InvestigationResult {
   score: number;
@@ -11,173 +23,364 @@ interface InvestigationResult {
   diff?: string;
   error?: string;
   message?: string;
-  /**
-   * Optional AI-generated explanation. When present, it narrates the
-   * deterministic evidence set. The score and outcome are authoritative
-   * from the evidence engine; the AI never modifies them.
-   */
   aiExplanation?: string;
+  /** "ai" when a configured provider produced the text, else "deterministic". */
+  explanationSource?: "ai" | "deterministic";
+  /** Why the deterministic fallback was used (server-provided). */
+  explanationFallback?: "no-provider" | "timeout" | "http-error" | "invalid-output" | "provider-error";
 }
 
 interface InvestigationPanelProps {
   open: boolean;
   result?: InvestigationResult;
   error?: string;
+  onClose?: () => void;
+  /** Recorded events, used by Copy-for-AI / Export report (already in the UI). */
+  events?: PromptEvent[];
 }
 
-function outcomeLabel(status: InvestigationOutcome): string {
-  switch (status) {
+/** Deterministic confidence label derived from the engine's score. */
+function confidenceLabel(score: number): "High" | "Medium" | "Low" | "None" {
+  if (score >= 70) return "High";
+  if (score >= 40) return "Medium";
+  if (score >= 1) return "Low";
+  return "None";
+}
+
+/** One plain-English verdict sentence, derived only from status + candidate. */
+function verdictSentence(result: InvestigationResult): string {
+  const top = result.topCandidates[0]?.candidate;
+  switch (result.status) {
     case "LIKELY_ROOT_CAUSE":
-      return "LIKELY ROOT CAUSE";
+      return top
+        ? `The recorded evidence points to ${top} as the likely cause of this failure.`
+        : "The recorded evidence points to a likely root cause.";
     case "NO_CLEAR_ROOT_CAUSE":
-      return "NO CLEAR ROOT CAUSE";
+      return "The recorded evidence is ambiguous — no single change clearly explains this failure.";
     case "NO_CAUSAL_CHANGE_DETECTED":
-      return "NO CAUSAL CHANGE DETECTED";
+      return "No recorded change explains this failure.";
     default:
-      return status;
+      return "Investigation complete.";
   }
 }
 
-function chainStepClass(step: string): string {
-  if (step.startsWith("BUILD PASSED")) return "chain-step pass";
-  if (step.startsWith("FILE CHANGED")) return "chain-step change";
-  if (step.startsWith("BUILD FAILED")) return "chain-step fail";
-  if (step.startsWith("ERROR MATCH")) return "chain-step error";
-  if (step.startsWith("LIKELY_ROOT_CAUSE") || step.startsWith("NO_CLEAR_ROOT_CAUSE") || step.startsWith("NO_CAUSAL_CHANGE_DETECTED")) return "chain-step root";
-  if (step.startsWith("FAILURE REPORTED")) return "chain-step fail";
-  return "chain-step";
+/** 2-3 short lines describing what happened, taken from the engine's chain. */
+function happenedLines(chain: string[]): string[] {
+  const out: string[] = [];
+  for (const raw of chain) {
+    if (raw.startsWith("BUILD PASSED")) {
+      const rest = raw.replace("BUILD PASSED", "").trim();
+      if (rest.includes(" — ")) {
+        const [when = "", tail = ""] = rest.split(" — ");
+        out.push(`Last passing build at ${when.trim()}`);
+        if (tail.trim()) out.push(tail.trim());
+      } else if (rest) {
+        out.push(`Last passing build at ${rest}`);
+      } else {
+        out.push("A passing build was recorded");
+      }
+    } else if (raw.startsWith("FILE CHANGED")) {
+      const rest = raw.replace("FILE CHANGED ", "");
+      const parts = rest.split(" ");
+      const ts = parts[parts.length - 1] ?? "";
+      const path = parts.slice(0, -1).join(" ");
+      out.push(path ? `${path} changed at ${ts}` : `File changed at ${ts}`);
+    } else if (raw.startsWith("BUILD FAILED")) {
+      const ts = raw.replace("BUILD FAILED", "").trim();
+      out.push(ts ? `Build failed at ${ts}` : "Build failed");
+    } else if (
+      raw.startsWith("No failure recorded yet") ||
+      raw.startsWith("No last healthy state") ||
+      raw.includes("no change in the window")
+    ) {
+      out.push(raw);
+    }
+    if (out.length >= 3) break;
+  }
+  return out;
 }
 
-function chainStepIcon(step: string): string {
-  if (step.startsWith("BUILD PASSED")) return "\u2713";
-  if (step.startsWith("FILE CHANGED")) return "\u25C8";
-  if (step.startsWith("BUILD FAILED")) return "\u2715";
-  if (step.startsWith("ERROR MATCH")) return "\u26A0";
-  if (step.startsWith("LIKELY_ROOT_CAUSE")) return "\u25C6";
-  if (step.startsWith("NO_CLEAR_ROOT_CAUSE")) return "\u25C7";
-  if (step.startsWith("NO_CAUSAL_CHANGE_DETECTED")) return "\u25CB";
-  if (step.startsWith("FAILURE REPORTED")) return "\u2715";
-  return "\u2022";
+/** The changed file, from the top candidate or the chain's FILE CHANGED step. */
+function changedFile(result: InvestigationResult): string {
+  if (result.topCandidates[0]?.candidate) return result.topCandidates[0].candidate;
+  const fileStep = result.chain.find((s) => s.startsWith("FILE CHANGED"));
+  if (fileStep) {
+    const rest = fileStep.replace("FILE CHANGED ", "");
+    const parts = rest.split(" ");
+    return parts.slice(0, -1).join(" ");
+  }
+  return "";
 }
 
-export function InvestigationPanel({ open, result, error }: InvestigationPanelProps) {
+/** What the deterministic engine checks — shown for the 0% / no-change case. */
+const ENGINE_CHECKS = [
+  "a file changed in the investigation window",
+  "the build/test output references the changed file",
+  "the error message references the changed file",
+  "a change landed within 30 seconds of the failure",
+];
+
+export function InvestigationPanel({
+  open,
+  result,
+  error,
+  onClose,
+  events = [],
+}: InvestigationPanelProps) {
+  const [copied, setCopied] = useState(false);
+
   if (!open) return null;
+
+  const failureEvent = [...events].reverse().find((e) => isFailureEvent(e));
+
+  const onCopyPrompt = async () => {
+    if (!failureEvent) return;
+    const ok = await copyText(buildAiPrompt(failureEvent, events, result));
+    if (ok) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    }
+  };
+
+  const onExport = () => {
+    if (!result) return;
+    const md = buildReportMarkdown(result, events);
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    downloadMarkdown(`blackbox-investigation-${stamp}.md`, md);
+  };
 
   if (error) {
     return (
-      <div className="callout">
-        The deterministic report cannot be rendered: {error}
+      <div className="investigation">
+        <div className="investigation__backdrop" />
+        <div className="investigation__panel">
+          <div className="investigation__header">
+            <div>
+              <div className="investigation__eyebrow">Failure Investigation</div>
+            </div>
+            <button className="investigation__close" onClick={onClose}>
+              Close
+            </button>
+          </div>
+          <div className="investigation__callout">
+            The deterministic report cannot be rendered: {error}
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!result) return null;
 
-  const outcomeClass =
-    result.status === "LIKELY_ROOT_CAUSE"
-      ? "outcome likely"
-      : result.status === "NO_CLEAR_ROOT_CAUSE"
-        ? "outcome ambiguous"
-        : "outcome none";
 
-  const changedPath = result.topCandidates && result.topCandidates[0]
-    ? result.topCandidates[0].candidate
-    : result.chain.find((s) => s.startsWith("FILE CHANGED"))?.replace("FILE CHANGED ", "")?.split(" ").slice(0, -1).join(" ") || "";
+  const isNoChange = result.status === "NO_CAUSAL_CHANGE_DETECTED";
+  const confidence = confidenceLabel(result.score);
+  const isAiExplanation = result.explanationSource === "ai";
+  const explanationNote =
+    !result.explanationFallback || result.explanationFallback === "no-provider"
+      ? "No AI provider configured"
+      : "AI unavailable, showing deterministic summary";
+  const happened = happenedLines(result.chain);
+  const file = changedFile(result);
+  const otherCauses = result.topCandidates.slice(1);
+  // "What to try next" renders only when the result actually provides
+  // suggestions. The current engine result has no such field, so it is
+  // never shown — nothing is invented.
 
   return (
     <div className="investigation">
-      <div className="inv-header">
-        <h2>Investigation Result</h2>
-        <div className={`outcome-banner ${outcomeClass}`}>
-          <span className="outcome-label">{outcomeLabel(result.status)}</span>
-        </div>
-      </div>
-
-      <div className="score-row">
-        <div className={`score ${result.status === "LIKELY_ROOT_CAUSE" ? "" : result.status === "NO_CLEAR_ROOT_CAUSE" ? "amber" : "red"}`}>
-          {result.score}%
-        </div>
-        <div className="score-label">Confidence</div>
-      </div>
-
-      {result.breakdown.length > 0 && (
-        <div className="breakdown">
-          <div className="breakdown-title">Why {result.score}%?</div>
-          {result.breakdown.map((b, i) => (
-            <div key={i} className="breakdown-row">
-              <span className="breakdown-point">{b.point}</span>
-              <span className="breakdown-score">+25</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="chain-section">
-        <div className="section-title">Evidence Chain</div>
-        <div className="chain">
-          {result.chain.map((step, i) => (
-            <div key={i} className={chainStepClass(step)}>
-              <span className="chain-icon">{chainStepIcon(step)}</span>
-              <span className="chain-content">
-                <span className="chain-step-label">{step.split(" ").slice(0, 2).join(" ") || step}</span>
-                <span className="chain-step-detail">{step}</span>
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {changedPath && (
-        <div className="file-section">
-          <div className="section-title">Changed File</div>
-          <div className="file-path mono">{changedPath}</div>
-        </div>
-      )}
-
-      {result.error && (
-        <div className="error-section">
-          <div className="section-title">Build / Test Error</div>
-          <pre className="error-output">{result.error}</pre>
-        </div>
-      )}
-
-      {result.diff && (
-        <div className="diff-section">
-          <div className="section-title">Git Diff</div>
-          <pre className="diff-output">{result.diff}</pre>
-        </div>
-      )}
-
-      {result.topCandidates && result.topCandidates.length > 0 && (
-        <div className="candidates-section">
-          <div className="section-title">Top Candidates</div>
-          <div className="candidates">
-            {result.topCandidates.map((c, i) => (
-              <div key={i} className="candidate">
-                <span className="candidate-name mono">{c.candidate}</span>
-                <span className="candidate-score">{c.score}%</span>
-              </div>
-            ))}
+      <div className="investigation__backdrop" />
+      <div className="investigation__panel">
+        <div className="investigation__header">
+          <div>
+            <div className="investigation__eyebrow">Failure Investigation</div>
+          </div>
+          <div className="investigation__header-actions">
+            {failureEvent && (
+              <button className="investigation__action" onClick={onCopyPrompt}>
+                {copied ? "Copied ✓" : "Copy for AI agent"}
+              </button>
+            )}
+            <button className="investigation__action" onClick={onExport}>
+              Export report
+            </button>
+            <button className="investigation__close" onClick={onClose}>
+              Close
+            </button>
           </div>
         </div>
-      )}
 
-      {result.aiExplanation && (
-        <div className="ai-section">
-          <div className="section-title">Deterministic Explanation</div>
-          <p className="ai-disclaimer">
-            This narration is generated from the recorded evidence. The confidence score and
-            outcome above are determined by the deterministic evidence engine, not by an AI model.
-          </p>
-          <pre className="ai-narrative">{result.aiExplanation}</pre>
-        </div>
-      )}
+        {/* Verdict: plain-English sentence + deterministic confidence. */}
+        <section className="investigation__section investigation__verdict">
+          <div className="investigation__section-head">
+            <span className="investigation__section-title">Verdict</span>
+            <span className="investigation__tag" data-kind="evidence">
+              Deterministic evidence
+            </span>
+          </div>
+          <p className="investigation__verdict-line">{verdictSentence(result)}</p>
+          <div className="investigation__confidence">
+            <span className={`investigation__confidence-score ${confidence === "None" ? "none" : confidence === "High" ? "high" : "mid"}`}>
+              {result.score}%
+            </span>
+            <span className="investigation__confidence-label">
+              confidence · {confidence}
+            </span>
+            <span className="investigation__score-bar">
+              <span
+                className={confidence === "None" ? "fail" : confidence === "High" ? "green" : "amber"}
+                style={{ width: `${Math.min(100, Math.max(0, result.score))}%` }}
+              />
+            </span>
+          </div>
+        </section>
 
-      {!result.diff && !result.error && !result.topCandidates && result.breakdown.length === 0 && (
-        <div className="callout">
-          No additional evidence retained for this case.
-        </div>
-      )}
+        {/* What happened */}
+        {happened.length > 0 && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">What happened</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <ul className="investigation__lines">
+              {happened.map((line, i) => (
+                <li key={i}>{line}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* No-change case: say it plainly and list what was checked. */}
+        {isNoChange && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">What BlackBox checked</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <p className="investigation__plain">
+              No recorded change explains this failure. BlackBox checked:
+            </p>
+            <ul className="investigation__checks">
+              {ENGINE_CHECKS.map((c) => (
+                <li key={c}>
+                  <span className="investigation__check-mark">checked</span>
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Why we think so — evidence signals with their event ids. */}
+        {result.breakdown.length > 0 && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">Why we think so</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <ul className="investigation__signals">
+              {result.breakdown.map((b, i) => (
+                <li key={i}>
+                  <span className="investigation__signal-text">{b.point}</span>
+                  <span className="investigation__signal-meta mono">
+                    {b.eventId ? `event ${b.eventId.slice(0, 8)}` : ""}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* What changed — with the diff in a collapsible code block. */}
+        {file && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">What changed</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <div className="investigation__file-path">{file}</div>
+            {result.diff && (
+              <details className="investigation__details">
+                <summary>Git diff</summary>
+                <pre className="investigation__pre">{result.diff}</pre>
+              </details>
+            )}
+          </section>
+        )}
+
+        {/* The error */}
+        {result.error && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">The error</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <pre className="investigation__pre error">{result.error}</pre>
+          </section>
+        )}
+
+        {/* Other possible causes */}
+        {otherCauses.length > 0 && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">Other possible causes</span>
+              <span className="investigation__tag" data-kind="evidence">
+                Deterministic evidence
+              </span>
+            </div>
+            <ul className="investigation__candidates">
+              {otherCauses.map((c, i) => (
+                <li key={i}>
+                  <span className="investigation__candidate-path">{c.candidate}</span>
+                  <span className="investigation__candidate-score mono">{c.score}%</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* Explanation — tagged by provenance: AI-written only when a real
+            provider produced it; otherwise a deterministic summary + note. */}
+        {result.aiExplanation && (
+          <section className="investigation__section">
+            <div className="investigation__section-head">
+              <span className="investigation__section-title">Explanation</span>
+              <span
+                className="investigation__tag"
+                data-kind={isAiExplanation ? "ai" : "evidence"}
+              >
+                {isAiExplanation ? "AI-written" : "Deterministic summary"}
+              </span>
+            </div>
+            <p className="investigation__ai-note">
+              {isAiExplanation
+                ? "A narrative of the evidence above — not proof. The verdict, confidence and signals come from the deterministic engine."
+                : explanationNote}
+            </p>
+            <div className="investigation__ai-text">{result.aiExplanation}</div>
+          </section>
+        )}
+
+        {!result.diff &&
+          !result.error &&
+          !result.topCandidates.length &&
+          result.breakdown.length === 0 &&
+          !result.aiExplanation && (
+            <div className="investigation__callout">
+              No additional evidence retained for this case.
+            </div>
+          )}
+      </div>
     </div>
   );
 }
