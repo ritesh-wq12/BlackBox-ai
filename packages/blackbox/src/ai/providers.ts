@@ -11,7 +11,7 @@
  */
 import type { EvidenceSet } from "../engine/index.js";
 
-/** System prompt shared by both providers (content per product spec). */
+/** System prompt shared by all providers (content per product spec). */
 export const AI_SYSTEM_PROMPT =
   "You explain software failure investigations. " +
   "Use ONLY the facts in the provided evidence. " +
@@ -27,41 +27,83 @@ export const AI_SYSTEM_PROMPT =
 export const DEFAULT_ANTHROPIC_MODEL = "claude-haiku-4-5";
 export const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 
+export type ProviderKind = "anthropic" | "openai" | "openai-compatible";
+export type AnyProviderKind = ProviderKind;
+
 export interface ProviderFetchOptions {
-  provider: "anthropic" | "openai";
-  apiKey: string;
+  provider: AnyProviderKind;
+  apiKey?: string;
+  baseUrl?: string; // openai-compatible only
   /** Optional model override; falls back to a small default per provider. */
   model?: string;
   /** Optional request timeout in ms (default 10000). */
   timeoutMs?: number;
 }
 
-/**
- * Build the providerFetch function for the configured provider.
- * Throws only from within the returned function — construction never
- * reveals or stores anything beyond the given options.
- */
-export function buildProviderFetch(
-  options: ProviderFetchOptions
-): (evidenceSet: EvidenceSet) => Promise<string> {
-  const model =
-    options.model ||
-    (options.provider === "anthropic" ? DEFAULT_ANTHROPIC_MODEL : DEFAULT_OPENAI_MODEL);
+const ETH_CONTENT_TYPE = "application/json";
+
+function openaiBody(model: string, userMessage: string): string {
+  return JSON.stringify({
+    model,
+    max_tokens: 600,
+    temperature: 0.2,
+    messages: [
+      { role: "system", content: AI_SYSTEM_PROMPT },
+      { role: "user", content: userMessage },
+    ],
+  });
+}
+
+function openaiFetch(
+  url: string,
+  apiKey: string,
+  timeoutMs: number,
+  userMessage: string,
+  providerLabel: string,
+  model: string
+): Promise<string> {
+  const signal = AbortSignal.timeout(timeoutMs);
+  return fetch(url, {
+    method: "POST",
+    signal,
+    headers: {
+      "content-type": ETH_CONTENT_TYPE,
+      ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}),
+    },
+    body: openaiBody(model, userMessage),
+  }).then(async (res) => {
+    const data = (await res.json()) as {
+      choices?: { message?: { content?: string } }[];
+    };
+    const text = data.choices?.[0]?.message?.content;
+    if (!text || !text.trim()) throw new Error(`${providerLabel} returned an empty explanation`);
+    return text;
+  });
+}
+
+function openaiUrl(provider: AnyProviderKind, baseUrl: string | undefined): string {
+  if (provider === "openai") {
+    return "https://api.openai.com/v1/chat/completions";
+  }
+  return new URL("/chat/completions", baseUrl ?? "").toString();
+}
+
+export function buildProviderFetch(options: ProviderFetchOptions): (evidenceSet: EvidenceSet) => Promise<string> {
+  const provider = options.provider;
+  const apiKey = (options.apiKey ?? "").trim();
+  const model = options.model || (provider === "anthropic" ? DEFAULT_ANTHROPIC_MODEL : DEFAULT_OPENAI_MODEL);
   const timeoutMs = options.timeoutMs ?? 10_000;
 
-  return async (evidenceSet: EvidenceSet): Promise<string> => {
-    // Only the evidence set leaves the process — never events, paths on disk,
-    // or the database.
-    const userMessage = JSON.stringify(evidenceSet, null, 2);
-    const signal = AbortSignal.timeout(timeoutMs);
-
-    if (options.provider === "anthropic") {
+  if (provider === "anthropic") {
+    return async (evidenceSet: EvidenceSet): Promise<string> => {
+      const userMessage = JSON.stringify(evidenceSet, null, 2);
+      const signal = AbortSignal.timeout(timeoutMs);
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         signal,
         headers: {
           "content-type": "application/json",
-          "x-api-key": options.apiKey,
+          "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
@@ -71,48 +113,16 @@ export function buildProviderFetch(
           messages: [{ role: "user", content: userMessage }],
         }),
       });
-      if (!res.ok) {
-        // Status only — the response body and API key are never surfaced.
-        throw new Error(`anthropic HTTP ${res.status}`);
-      }
-      const data = (await res.json()) as {
-        content?: { type?: string; text?: string }[];
-      };
+      if (!res.ok) throw new Error(`anthropic HTTP ${res.status}`);
+      const data = (await res.json()) as { content?: { type?: string; text?: string }[] };
       const text = (data.content ?? []).find((b) => b.type === "text")?.text;
-      if (!text || !text.trim()) {
-        throw new Error("anthropic returned an empty explanation");
-      }
+      if (!text || !text.trim()) throw new Error("anthropic returned an empty explanation");
       return text;
-    }
-
-    // openai
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      signal,
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${options.apiKey}`,
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 600,
-        temperature: 0.2,
-        messages: [
-          { role: "system", content: AI_SYSTEM_PROMPT },
-          { role: "user", content: userMessage },
-        ],
-      }),
-    });
-    if (!res.ok) {
-      throw new Error(`openai HTTP ${res.status}`);
-    }
-    const data = (await res.json()) as {
-      choices?: { message?: { content?: string } }[];
     };
-    const text = data.choices?.[0]?.message?.content;
-    if (!text || !text.trim()) {
-      throw new Error("openai returned an empty explanation");
-    }
-    return text;
-  };
+  }
+
+  // openai + openai-compatible both use the same OpenAI-format chat endpoint.
+  const url = openaiUrl(provider, options.baseUrl);
+  return async (evidenceSet: EvidenceSet): Promise<string> =>
+    openaiFetch(url, apiKey, timeoutMs, JSON.stringify(evidenceSet, null, 2), provider, model);
 }

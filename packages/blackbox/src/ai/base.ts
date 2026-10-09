@@ -6,13 +6,14 @@
  * that all adapters must implement.
  */
 
-import type { EvidenceSet } from "../engine/index.js";
-
-export interface AiProviderConfig {
+import type { EvidenceSet } from "../engine/index.js";export interface AiProviderConfig {
   /** Optional provider name (e.g. "anthropic", "openai"). */
   provider?: string;
+  /** For openai-compatible providers: optional base URL (no "/v1/" prefix). */
+  baseUrl?: string;
   /** Optional API key. When absent, the fallback adapter is used. */
   apiKey?: string;
+
   /**
    * Optional provider fetch function. When provided, the ProviderAdapter uses
    * it to fetch an AI explanation from the configured provider.
@@ -22,9 +23,9 @@ export interface AiProviderConfig {
    * the fallback adapter is used instead.
    */
   providerFetch?: (evidenceSet: EvidenceSet) => Promise<string>;
-  /**
-   * Optional timeout in milliseconds for the provider fetch. Defaults to 10 seconds.
-   */
+  /** Optional model override; falls back to a small default per provider. */
+  model?: string;
+  /** Optional request timeout in ms (default 10 seconds). */
   timeoutMs?: number;
 }
 

@@ -33,21 +33,44 @@ let aiAdapter: ExplainableAdapter | null = null;
 
 function getAiAdapter(): ExplainableAdapter {
   if (!aiAdapter) {
-    const provider = (process.env.BLACKBOX_AI_PROVIDER ?? "").trim().toLowerCase();
+    const providerRaw = (process.env.BLACKBOX_AI_PROVIDER ?? "").trim();
+    const provider = providerRaw.toLowerCase();
     const apiKey = (process.env.BLACKBOX_AI_API_KEY ?? "").trim();
+    const baseUrl = (process.env.BLACKBOX_AI_BASE_URL ?? "").trim();
     const model = (process.env.BLACKBOX_AI_MODEL ?? "").trim();
     const timeoutRaw = Number((process.env.BLACKBOX_AI_TIMEOUT_MS ?? "").trim());
     const timeoutMs = Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : 10_000;
 
+    // Accept "anthropic", "openai" or "openai-compatible" (see providers.ts).
+    // An openai-compatible provider uses BLACKBOX_AI_BASE_URL as the API base;
+    // the key is sent as Bearer if present. Reuse the same prompt, validation,
+    // timeout and fallback as the existing Anthropic/OpenAI paths.
     let config: AiProviderConfig = {};
-    if ((provider === "anthropic" || provider === "openai") && apiKey) {
+    if ((provider === "anthropic" || provider === "openai" || provider === "openai-compatible") && apiKey) {
       config = {
         provider,
         apiKey,
         timeoutMs,
+        baseUrl: provider === "openai-compatible" ? baseUrl : undefined,
         providerFetch: buildProviderFetch({
           provider,
           apiKey,
+          baseUrl: provider === "openai-compatible" ? baseUrl : undefined,
+          model: model || undefined,
+          timeoutMs,
+        }),
+      };
+    }
+    // Also allow an openai-compatible provider WITHOUT a key only when a base URL
+    // is configured (callers that configure a key-less public/proxy endpoint).
+    if (provider === "openai-compatible" && !apiKey && baseUrl) {
+      config = {
+        provider,
+        timeoutMs,
+        baseUrl,
+        providerFetch: buildProviderFetch({
+          provider,
+          baseUrl,
           model: model || undefined,
           timeoutMs,
         }),

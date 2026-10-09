@@ -37,5 +37,7 @@ export {
   AI_SYSTEM_PROMPT,
   DEFAULT_ANTHROPIC_MODEL,
   DEFAULT_OPENAI_MODEL,
+  type ProviderKind,
   type ProviderFetchOptions,
+  type AnyProviderKind,
 } from "./providers.js";
