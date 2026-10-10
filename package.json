@@ -12,7 +12,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "blackbox": "node packages/blackbox/dist/cli.js",
+    "blackbox": "node packages/blackbox/dist/cli/index.js",
     "dashboard:dev": "npm --workspace packages/blackbox-dashboard run dev",
     "dashboard:build": "npm --workspace packages/blackbox-dashboard run build",
     "dashboard:preview": "npm --workspace packages/blackbox-dashboard run preview",

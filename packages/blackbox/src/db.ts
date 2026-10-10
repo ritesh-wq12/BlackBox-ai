@@ -85,6 +85,9 @@ export class Storage {
     this.config = config;
     mkdirSync(dirname(config.filepath), { recursive: true });
     this.db = new DatabaseSync(config.filepath);
+    // Give SQLite time to resolve concurrent access instead of failing with
+    // "database is locked" when `start` and `run` share the same file.
+    this.db.exec("PRAGMA busy_timeout = 5000;");
     this.db.exec(Storage.SCHEMA);
   }
 

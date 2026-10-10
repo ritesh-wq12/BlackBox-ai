@@ -85,13 +85,20 @@ function openaiUrl(provider: AnyProviderKind, baseUrl: string | undefined): stri
   if (provider === "openai") {
     return "https://api.openai.com/v1/chat/completions";
   }
-  return new URL("/chat/completions", baseUrl ?? "").toString();
+  // openai-compatible: base URL + /chat/completions, no /v1 prefix.
+  // Strip any trailing slash from baseUrl before appending the path.
+  const cleanBase = baseUrl?.replace(/\/+$/, "") ?? "";
+  return cleanBase + "/chat/completions";
 }
 
 export function buildProviderFetch(options: ProviderFetchOptions): (evidenceSet: EvidenceSet) => Promise<string> {
   const provider = options.provider;
   const apiKey = (options.apiKey ?? "").trim();
-  const model = options.model || (provider === "anthropic" ? DEFAULT_ANTHROPIC_MODEL : DEFAULT_OPENAI_MODEL);
+  // openai-compatible requires BLACKBOX_AI_MODEL; missing model or base URL → fallback.
+  const model =
+    provider === "openai-compatible"
+      ? (options.model || "")
+      : options.model || (provider === "anthropic" ? DEFAULT_ANTHROPIC_MODEL : DEFAULT_OPENAI_MODEL);
   const timeoutMs = options.timeoutMs ?? 10_000;
 
   if (provider === "anthropic") {

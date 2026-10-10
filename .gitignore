@@ -15,3 +15,8 @@ packages/blackbox-dashboard/node_modules/
 # blackbox project-local data
 **/.blackbox/
 **/.blackbox.sqlite
+
+# Local environment/secrets — never commit
+.env
+.env.*
+!.env.example

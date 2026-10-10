@@ -1,0 +1,1 @@
+throw new Error("BLACKBOX_DEMO_INTENTIONAL_FAILURE");

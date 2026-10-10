@@ -9,7 +9,7 @@
 import type { EvidenceSet } from "../engine/index.js";export interface AiProviderConfig {
   /** Optional provider name (e.g. "anthropic", "openai"). */
   provider?: string;
-  /** For openai-compatible providers: optional base URL (no "/v1/" prefix). */
+  /** For openai-compatible providers: optional base URL (the path /chat/completions is appended; do not include /v1). */
   baseUrl?: string;
   /** Optional API key. When absent, the fallback adapter is used. */
   apiKey?: string;

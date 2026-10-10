@@ -1,25 +1,23 @@
 /**
  * Deterministic fallback AI adapter — works without any API key.
  *
- * Produces a natural-language explanation from the EvidenceSet produced by
- * the deterministic evidence engine. This is the local/fallback mode that
- * the PRD requires: the core feature works offline, and the AI layer is
- * optional.
+ * Produces explanations from the deterministic EvidenceSet.
+ * The AI layer is optional; this adapter works offline.
  *
  * Rules:
- *   - NEVER modifies the score, outcome, or evidence.
- *   - NEVER invents files, errors, timestamps, or causes not in the evidence.
- *   - Strong evidence → explains why the recorded evidence supports it.
- *   - Ambiguous evidence → explains uncertainty and missing/conflicting evidence.
- *   - No causal change → explains that no supported causal change was found.
+ * - Never modifies the score, outcome, or evidence.
+ * - Never invents files, errors, timestamps, or causes.
+ * - Displays the actual recorded error when available.
+ * - Does not claim an error proves which file caused the failure.
  */
 
-import { BaseAdapter, type AiProviderConfig, type ExplanationResult } from "./base.js";
+import { BaseAdapter, type ExplanationResult } from "./base.js";
 import type { EvidenceSet } from "../engine/index.js";
 
 export class FallbackAdapter extends BaseAdapter {
-  /** Deterministic explanation with provenance metadata. */
-  async explainDetailed(evidenceSet: EvidenceSet): Promise<ExplanationResult> {
+  async explainDetailed(
+    evidenceSet: EvidenceSet,
+  ): Promise<ExplanationResult> {
     return {
       text: this.explain(evidenceSet),
       source: "deterministic",
@@ -42,22 +40,37 @@ export class FallbackAdapter extends BaseAdapter {
     }
   }
 
+  private appendObservedError(
+    lines: string[],
+    set: EvidenceSet,
+  ): void {
+    const error = set.error?.trim();
+
+    if (!error) return;
+
+    lines.push("");
+    lines.push("ACTUAL RECORDED FAILURE:");
+    lines.push(error);
+    lines.push("");
+    lines.push(
+      "This error identifies what failed, but does not by itself prove which file change caused it.",
+    );
+  }
+
   private explainLikelyRootCause(set: EvidenceSet): string {
     const candidate = set.topCandidates[0];
-    if (!candidate) {
-      // Should not happen for LIKELY_ROOT_CAUSE, but defend anyway.
-      return this.uncertainExplanation(set);
-    }
+
+    if (!candidate) return this.uncertainExplanation(set);
 
     const lines: string[] = [
       `The Digital Black Box found likely root cause: ${candidate.candidate}.`,
-      `Confidence: ${set.score}% — this score comes from recorded evidence, not from an AI guess.`,
+      `Confidence: ${set.score}% — based on recorded evidence.`,
       "",
       "Evidence summary:",
     ];
 
     for (const point of set.breakdown) {
-      lines.push(`  • ${point.point} (event ${point.eventId})`);
+      lines.push(`  - ${point.point} (event ${point.eventId})`);
     }
 
     if (set.chain.length > 0) {
@@ -68,10 +81,7 @@ export class FallbackAdapter extends BaseAdapter {
       }
     }
 
-    if (set.error) {
-      lines.push("");
-      lines.push(`Error captured: ${set.error}`);
-    }
+    this.appendObservedError(lines, set);
 
     if (set.diff) {
       lines.push("");
@@ -82,14 +92,20 @@ export class FallbackAdapter extends BaseAdapter {
     if (set.topCandidates.length > 1) {
       lines.push("");
       lines.push(
-        `Other candidates considered: ${set.topCandidates.slice(1).map((c) => c.candidate).join(", ")}.`
+        `Other candidates considered: ${set.topCandidates
+          .slice(1)
+          .map((item) => item.candidate)
+          .join(", ")}.`,
       );
-      lines.push("The evidence above supports the top candidate more strongly than the alternatives.");
     }
 
     lines.push("");
     lines.push(
-      "This explanation narrates the recorded evidence. The score and outcome were determined by the deterministic evidence engine, not by an AI model."
+      "The deterministic evidence engine determines the score and outcome.",
+    );
+    lines.push("");
+    lines.push(
+      "This explanation narrates the recorded evidence; the score and outcome come from the deterministic evidence engine, not from the AI.",
     );
 
     return lines.join("\n");
@@ -97,22 +113,28 @@ export class FallbackAdapter extends BaseAdapter {
 
   private explainNoClearRootCause(set: EvidenceSet): string {
     const lines: string[] = [
-      `The Digital Black Box could not identify a clear root cause with high confidence.`,
+      "The Digital Black Box could not identify a clear root cause.",
       `Confidence: ${set.score}% — the recorded evidence is ambiguous or incomplete.`,
       "",
     ];
 
     if (set.topCandidates.length > 0) {
       lines.push("Changes observed in the investigation window:");
+
       for (const candidate of set.topCandidates) {
-        lines.push(`  • ${candidate.candidate} (score: ${candidate.score}/100)`);
+        lines.push(
+          `  - ${candidate.candidate} (score: ${candidate.score}/100)`,
+        );
       }
+
       lines.push("");
       lines.push(
-        "The evidence does not clearly point to one of these as the cause. The failure may be related to one of these changes, or to something the Black Box did not record."
+        "The evidence does not establish which change caused the failure.",
       );
     } else {
-      lines.push("No specific file changes were identified in the investigation window.");
+      lines.push(
+        "No specific file changes were identified in the investigation window.",
+      );
     }
 
     if (set.chain.length > 0) {
@@ -123,18 +145,15 @@ export class FallbackAdapter extends BaseAdapter {
       }
     }
 
-    if (set.error) {
-      lines.push("");
-      lines.push(`Error captured: ${set.error}`);
-    }
+    this.appendObservedError(lines, set);
 
     lines.push("");
     lines.push(
-      "Possible explanations the Black Box cannot distinguish without more evidence: the failure may come from an external dependency, environment, network, configuration, a nondeterministic test, or a change the Black Box did not observe."
+      "The failure may involve an external dependency, environment, network, configuration, nondeterministic test, or unrecorded change.",
     );
     lines.push("");
     lines.push(
-      "This explanation narrates the recorded evidence and its gaps. The score and outcome were determined by the deterministic evidence engine, not by an AI model."
+      "This explanation narrates the recorded evidence; the score and outcome come from the deterministic evidence engine, not from the AI.",
     );
 
     return lines.join("\n");
@@ -142,12 +161,14 @@ export class FallbackAdapter extends BaseAdapter {
 
   private explainNoCausalChange(set: EvidenceSet): string {
     const lines: string[] = [
-      `The Digital Black Box found no causal change that explains the failure.`,
+      "The Digital Black Box found no causal change that explains the failure.",
       `Confidence: ${set.score}% — no recorded evidence supports a specific root cause.`,
-      "",
     ];
 
+    this.appendObservedError(lines, set);
+
     if (set.chain.length > 0) {
+      lines.push("");
       lines.push("Timeline:");
       for (const step of set.chain) {
         lines.push(`  ${step}`);
@@ -156,37 +177,49 @@ export class FallbackAdapter extends BaseAdapter {
 
     lines.push("");
     lines.push(
-      "The failure may come from a source the Black Box did not record: an external dependency, environment change, network issue, configuration, a nondeterministic test, or another cause outside the project's recorded history."
+      "The failure may come from an external dependency, environment change, network issue, configuration, nondeterministic test, or another cause outside the project's recorded history.",
     );
     lines.push("");
     lines.push(
-      "This explanation reflects the recorded evidence. The score and outcome were determined by the deterministic evidence engine, not by an AI model."
+      "This explanation narrates the recorded evidence; the score and outcome come from the deterministic evidence engine, not from the AI.",
     );
 
     return lines.join("\n");
   }
 
   private unknownOutcome(set: EvidenceSet): string {
-    return [
+    const lines: string[] = [
       "The investigation produced an outcome the Black Box does not recognize.",
       `Score: ${set.score}/100.`,
       "",
       "Evidence chain:",
-      ...set.chain.map((s) => `  ${s}`),
-      "",
-      "This explanation reflects the recorded evidence. The score and outcome were determined by the deterministic evidence engine.",
-    ].join("\n");
+      ...set.chain.map((step) => `  ${step}`),
+    ];
+
+    this.appendObservedError(lines, set);
+
+    lines.push("");
+    lines.push(
+      "This explanation narrates the recorded evidence; the score and outcome come from the deterministic evidence engine, not from the AI.",
+    );
+
+    return lines.join("\n");
   }
 
   private uncertainExplanation(set: EvidenceSet): string {
-    return [
+    const lines: string[] = [
       "The investigation result is uncertain.",
       `Score: ${set.score}/100.`,
       "",
       "Evidence chain:",
-      ...set.chain.map((s) => `  ${s}`),
-      "",
-      "This explanation reflects the recorded evidence. The score and outcome were determined by the deterministic evidence engine.",
-    ].join("\n");
+      ...set.chain.map((step) => `  ${step}`),
+    ];    this.appendObservedError(lines, set);
+
+    lines.push("");
+    lines.push(
+      "This explanation narrates the recorded evidence; the score and outcome come from the deterministic evidence engine, not from the AI.",
+    );
+
+    return lines.join("\n");
   }
 }

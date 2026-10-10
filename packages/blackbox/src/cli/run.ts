@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { join } from "node:path";
+import type http from "node:http";
 import { getStorage } from "../storage/index.js";
 import { createCommandEvent, createErrorEvent, isBuildFailed } from "../events.js";
 
@@ -23,26 +24,48 @@ function promptPort(): number | undefined {
   return undefined;
 }
 
-function postToServer(port: number, events: Record<string, unknown>[]): boolean {
-  try {
-    const body = JSON.stringify(events);
-    const http = require("node:http");
-    const req = http.request(
-      {
-        hostname: "localhost",
-        port,
-        path: "/api/events",
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      },
-      () => { /* ignore response */ }
-    );
-    req.write(body);
-    req.end();
-    return true;
-  } catch {
-    return false;
-  }
+function postToServer(port: number, events: Record<string, unknown>[]): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      const body = JSON.stringify(events);
+      const http = require("node:http");
+      const req = http.request(
+        {
+          hostname: "localhost",
+          port,
+          path: "/api/events",
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        },
+        (res: http.IncomingMessage) => {
+          // Collect the response so the request can complete cleanly,
+          // then decide success based on the status code.
+          res.resume();
+          const status = res.statusCode;
+          resolve(status != null && status >= 200 && status < 300);
+        }
+      );
+      let settled = false;
+      const settle = (value: boolean) => {
+        if (!settled) {
+          settled = true;
+          resolve(value);
+        }
+      };
+      req.on("error", () => settle(false));
+      // Give the server a reasonable window to accept the batch; after that,
+      // treat it as a failure rather than hanging the CLI.
+      req.on("timeout", () => {
+        try { req.destroy(); } catch { /* ignore */ }
+        settle(false);
+      });
+      req.setTimeout(5_000);
+      req.write(body);
+      req.end();
+    } catch {
+      resolve(false);
+    }
+  });
 }
 
 type ServerRecordingStatus = "recording" | "paused" | "stopped" | null;
@@ -151,7 +174,10 @@ export class RunCommand {
         // print the "recorded" verdict for an event we did not save.
         console.log(`\n⏸ Black Box recording ${recordingStatus}: event not recorded`);
       } else {
-        if (this.port && !postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])) {
+        const posted = this.port
+          ? await postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])
+          : false;
+        if (!posted) {
           this.recordEvents(events);
         }
         console.log(`\n✕ Black Box recorded: BUILD FAILED`);
@@ -204,7 +230,10 @@ export class RunCommand {
         if (isBuildFailed(commandEvent)) process.exitCode = 1;
         return;
       }
-      if (this.port && !postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])) {
+      const posted = this.port
+        ? await postToServer(this.port, events.map((e) => ({ ...e })) as Record<string, unknown>[])
+        : false;
+      if (!posted) {
         this.recordEvents(events);
       }
 

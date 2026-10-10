@@ -127,7 +127,7 @@ export function App() {
       const res = await fetch("/api/investigate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ projectDir: state.project }),
+        body: JSON.stringify({ projectDir: state.project, sessionId: state.sessionId }),
       });
       const body = await res.json();
       setState((s) => ({ ...s, investigationOpen: true, investigationResult: body }));

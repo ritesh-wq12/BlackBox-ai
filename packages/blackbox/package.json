@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "node --watch-path=. --inspect=9229 dist/cli.js",
+    "dev": "node --watch-path=. --inspect=9229 dist/cli/index.js",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "node --test dist/cli/*.test.js dist/engine/*.test.js dist/events.test.js dist/ai/*.test.js"

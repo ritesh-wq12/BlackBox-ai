@@ -222,9 +222,28 @@ export class Server {
         }
         body = chunks.length > 0 ? JSON.parse(chunks.join("")) : null;
       }
-      const events = Array.isArray((body as { events?: unknown })?.events)
+
+      const postedEvents = Array.isArray((body as { events?: unknown })?.events)
         ? (body as { events: BlackBoxEvent[] }).events
-        : this.options.storage.listEvents(this.options.projectDir) as BlackBoxEvent[];
+        : undefined;
+      const postedSessionId = typeof (body as { sessionId?: unknown })?.sessionId === "string"
+        ? (body as { sessionId: string }).sessionId
+        : undefined;
+
+      // When events are posted directly, use them. Otherwise fall back to the
+      // stored events, optionally narrowed to the session the dashboard is
+      // showing (the same session id surfaced by /api/state).
+      let events: BlackBoxEvent[];
+      if (postedEvents) {
+        events = postedEvents;
+      } else {
+        const all = this.options.storage.listEvents(this.options.projectDir) as BlackBoxEvent[];
+        if (postedSessionId) {
+          events = all.filter((e) => e.sessionId === postedSessionId);
+        } else {
+          events = all;
+        }
+      }
       const result = evidenceEngine.analyze(events) as EvidenceSet;
       // The AI explanation is optional and does not modify the deterministic result.
       // Await the adapter so a Promise is never serialized into the response.
@@ -245,6 +264,9 @@ export class Server {
         ...(explanation.fallbackReason
           ? { explanationFallback: explanation.fallbackReason }
           : {}),
+        latestFailure:
+          result.chain.find((line) => line.startsWith("BUILD FAILED"))
+            ?.replace(/^BUILD FAILED /, "") ?? null,
       });
       return;
     }
